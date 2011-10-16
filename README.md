@@ -14,7 +14,7 @@ tested against other methods.
 
 * Calculating distance and bearing when two locations with longitude and latitude are are given.
 * Calculate target location when one location with longitude and latitude and distance and bearing are given.
-* Supports several ellipsoid (incl. WGS84) out of the box.
+* Supports several ellipsoids (incl. WGS84) out of the box.
 
 ## Installation
 
