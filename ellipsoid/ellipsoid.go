@@ -203,7 +203,7 @@ func (ellipsoid Ellipsoid) Intermediate(lat1, lon1, lat2, lon2 float64, steps in
 	var v []float64 = make([]float64, steps * 2 + 2)
 	for i :=0; i <= steps ; i++ {
 		a,b := ellipsoid.At(lat1, lon1, r * float64(i)/float64(steps) , phi)
-		v[i*2], v[i*2+1] = b,a
+		v[i*2], v[i*2+1] = a,b
 	}
 	arr = v
 	return r, phi, arr
