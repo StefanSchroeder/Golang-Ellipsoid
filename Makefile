@@ -18,3 +18,7 @@ all:
 
 format:
 	${GOFMT} -w ${GOFILES}
+
+clean:
+	rm -f hello_world.8 $(TARGET) *~ ellipsoid.8
+

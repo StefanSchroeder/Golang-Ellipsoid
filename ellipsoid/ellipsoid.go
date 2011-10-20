@@ -171,6 +171,45 @@ func Init(name string, units int, dist_units int, long_sym bool, bear_sym bool) 
 	return ellipsoid
 }
 
+/* Intermediate
+
+Takes two coordinates with longitude and latitude and a step count and 
+returns range and bearing and an array with the lons and lats of intermediate
+points on a straight line (whatever that is on an ellipsoid), INCLUDING the
+start and the endpoint.
+
+So if you put in point1 and point2 with step count 4, the output will be
+(you make 4 hops, right?)
+
+	point1
+	i1
+	i2
+	i3
+	point2
+
+Each point is two float64 values, lat and lon, thus you have an array
+with 4*2 + 2 = 5*2 cells.
+
+steps shall not be 0.
+
+I havent tested the upper limit for steps.
+
+*/
+func (ellipsoid Ellipsoid) Intermediate(lat1, lon1, lat2, lon2 float64, steps int) (distance, bearing float64, arr []float64) {
+	if steps == 0 {
+		return
+	}
+	r,phi := ellipsoid.To( lat1, lon1, lat2, lon2 )
+	var v []float64 = make([]float64, steps * 2 + 2)
+	for i :=0; i <= steps ; i++ {
+		a,b := ellipsoid.At(lat1, lon1, r * float64(i)/float64(steps) , phi)
+		v[i*2], v[i*2+1] = b,a
+	}
+	arr = v
+	return r, phi, arr
+
+}
+
 /* To
 
 Returns range, bearing between two specified locations.
