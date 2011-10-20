@@ -20,8 +20,14 @@ func main() {
     lat3, lon3 := geo1.At(lat1, lon1, 20000.0, 45.0)
     fmt.Printf("lat3 = %v lon3 = %v\n", lat3, lon3)
 
-    _, _, v := geo1.Intermediate(lat1, lon1, lat2, lon2, 5)
-    for i := 0; i < 6 ; i++ {
+    number_of_hops := 5
+    // Go from SFO to LAX with 5 hops, while ignoring range and bearing.
+    // The array v is used to store the coordinates for all intermediate
+    // points (including the start and the end point). 
+    _, _, v := geo1.Intermediate(lat1, lon1, lat2, lon2, number_of_hops)
+    fmt.Printf("-------------------------\n")
+    for i := 0; i < len(v)/2 ; i++ {
         fmt.Printf("%v %v # %v\n",v[i*2], v[i*2+1], i)
     }
+    fmt.Printf("-------------------------\n")
 }
