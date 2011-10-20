@@ -51,21 +51,70 @@ To run the application, put the code in a file called hello.go and run:
 
 This should print:
 
-FIXME.
+	Distance = 543044.190419953 Bearing = 137.50134015496275
+	lat3 = -122.21438161492877 lon3 = 37.74631054036373
 
 ### Parameters
 
-FIXME.
+## Init
+
+The first argument is an ellipsoid from this list:
+
+	"AIRY":               ellipse{6377563.396, 299.3249646},
+	"AIRY-MODIFIED":      ellipse{6377340.189, 299.3249646},
+	"AUSTRALIAN":         ellipse{6378160.0, 298.25},
+	"BESSEL-1841":        ellipse{6377397.155, 299.1528128},
+	"CLARKE-1880":        ellipse{6378249.145, 293.465},
+	"EVEREST-1830":       ellipse{6377276.345, 300.8017},
+	"EVEREST-MODIFIED":   ellipse{6377304.063, 300.8017},
+	"FISHER-1960":        ellipse{6378166.0, 298.3},
+	"FISHER-1968":        ellipse{6378150.0, 298.3},
+	"GRS80":              ellipse{6378137.0, 298.25722210088},
+	"HOUGH-1956":         ellipse{6378270.0, 297.0},
+	"HAYFORD":            ellipse{6378388.0, 297.0},
+	"IAU76":              ellipse{6378140.0, 298.257},
+	"KRASSOVSKY-1938":    ellipse{6378245.0, 298.3},
+	"NAD27":              ellipse{6378206.4, 294.9786982138},
+	"NWL-9D":             ellipse{6378145.0, 298.25},
+	"SOUTHAMERICAN-1969": ellipse{6378160.0, 298.25},
+	"SOVIET-1985":        ellipse{6378136.0, 298.257},
+	"WGS72":              ellipse{6378135.0, 298.26},
+	"WGS84":              ellipse{6378137.0, 298.257223563}
+
+The second argument is either 
+
+	Degrees or Radians
+	
+The third argument is either
+
+	Longitude_is_symmetric or Longitude_not_symmetric
+
+That's internally a boolean, true or false.
+
+The fourth argument is either
+
+	Bearing_is_symmetric or Bearing_not_symmetric
+
+That's also internally a boolean, true or false.
+
+## To and At
+
+See examples.
 
 ## Documentation
 
-This package is open source. You know what to do.
+Read the code or google for Geo::Ellipsis, that is the Perl package
+on CPAN that this package is a port of.
 
 ## About and Acknowledgments
 
-This package was ported from Perl to Go by  Stefan Schroeder.
+This package was ported from Perl to Go by Stefan Schroeder.
 
 Thank you to Jim Gibson for writing the Perl module Geo::Ellipsis.
 And to the authors of the Fortran module that he ported it from.
 
 This package has no other website other than github.
+
+## Bugs and Limitations
+
+Only To and At-functions are implemented from the Geo-Ellipsis-package.
