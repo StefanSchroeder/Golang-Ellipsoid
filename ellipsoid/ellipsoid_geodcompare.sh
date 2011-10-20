@@ -1,0 +1,3 @@
+geod +ellps=wgs84 <<EOF -I +units=m
+37.619002N 122.374843W 33.942536N 118.408074W
+EOF
