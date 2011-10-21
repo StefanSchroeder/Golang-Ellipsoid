@@ -18,7 +18,7 @@ SYNOPSIS
 package main
 
 import "fmt"
-import "geo/ellipsoid"
+import "ellipsoid"
 
 func main() {
 	lat1, lon1 := 37.619002, -122.374843 //SFO
@@ -173,7 +173,7 @@ func Init(name string, units int, dist_units int, long_sym bool, bear_sym bool) 
 
 /* Intermediate
 
-Takes two coordinates with longitude and latitude and a step count and 
+Takes two coordinates with longitude and latitude; and a step count and 
 returns range and bearing and an array with the lons and lats of intermediate
 points on a straight line (whatever that is on an ellipsoid), INCLUDING the
 start and the endpoint.
