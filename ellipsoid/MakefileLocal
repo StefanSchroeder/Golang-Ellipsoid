@@ -1,0 +1,11 @@
+all:
+	8g ellipsoid.go
+	8g ellipsoid_airports_test.go
+	8l -o airports.exe  ellipsoid_airports_test.8
+	8g ellipsoid_at_test.go
+	8l -o attest.exe ellipsoid_at_test.8
+	8g ellipsoid_intermediate_test.go
+	8l -o intermediate.exe ellipsoid_intermediate_test.8
+	8g ellipsoid_to_test.go
+	8l -o totest.exe ellipsoid_to_test.8
+	
