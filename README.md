@@ -49,6 +49,8 @@ To run the application, put the code in a file called hello.go and run:
 
     8g hello.go && 8l -o hello hello.8 && ./hello
 
+Or run the Makefile in Golang-Ellipsoid.
+
 This should print:
 
 	Distance = 543044.190419953 Bearing = 137.50134015496275
@@ -103,18 +105,18 @@ See examples.
 
 ## Documentation
 
-Read the code or google for Geo::Ellipsis, that is the Perl package
+Read the code or google for Geo::Ellipsoid, that is the Perl package
 on CPAN that this package is a port of.
 
 ## About and Acknowledgments
 
 This package was ported from Perl to Go by Stefan Schroeder.
 
-Thank you to Jim Gibson for writing the Perl module Geo::Ellipsis.
+Thank you to Jim Gibson for writing the Perl module Geo::Ellipsoid.
 And to the authors of the Fortran module that he ported it from.
 
 This package has no other website other than github.
 
 ## Bugs and Limitations
 
-Only To and At-functions are implemented from the Geo-Ellipsis-package.
+Only To and At-functions are implemented from the Geo-Ellipsoid-package.
