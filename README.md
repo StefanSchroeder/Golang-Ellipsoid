@@ -25,7 +25,7 @@ Make sure you have the a working Go environment. See the [install instructions](
 	package main
 
 	import "fmt"
-	import "geo/ellipsoid"
+	import "ellipsoid"
 
 	func main() {
 		lat1, lon1 := 37.619002, -122.374843 //SFO
