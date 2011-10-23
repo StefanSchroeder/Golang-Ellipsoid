@@ -1,7 +1,6 @@
-package main
+package ellipsoid
 
 import "fmt"
-import "./ellipsoid"
 
 func main() {
 	lat1, lon1 := 37.619002, -122.374843
