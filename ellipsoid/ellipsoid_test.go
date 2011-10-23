@@ -526,7 +526,7 @@ type testobject_airport struct {
 	delta float64
 }
 
-func TestAirport(t *testing.T) {
+func testAirport(t *testing.T) {
 	epsilon := 50.0
         all_tests := []testobject_airport{
 		{"Istanbul to Delhi",41.1, 29, 28.67, 77.21, 4550},
