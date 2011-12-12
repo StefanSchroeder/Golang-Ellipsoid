@@ -570,6 +570,7 @@ func TestToLLA(t *testing.T) {
 	e1 := Init("WGS84", Degrees, Meter, Longitude_is_symmetric, Bearing_not_symmetric)
 	{
 		x, y, z := -742507.1, -5462738.5, 3196706.5
+
 		lat, lon, h := e1.ToLLA(x, y, z)
 
 		delta_within(t, lat,  30.2746722, 10.0)
@@ -596,4 +597,36 @@ func TestToLLA(t *testing.T) {
 		delta_within(t, lon, 126.73316, 10.0)
 		delta_within(t, h, 23, 10.0)
 	}
+}
+
+func TestToECEF(t *testing.T) {
+	
+	e1 := Init("WGS84", Degrees, Meter, Longitude_is_symmetric, Bearing_not_symmetric)
+	{
+		lat, lon, h := 30.2746722, -97.7403306, 0.0
+		x, y, z := e1.ToECEF(lat,lon,h)
+		delta_within(t,x,-742507.1,10.0)
+		delta_within(t,y,-5462738.5,10.0)
+		delta_within(t,z, 3196706.5,10.0)
+	}
+	
+	{
+		lat, lon, h := 38.649882, -77.134602, -3261.28
+		x, y, z := e1.ToECEF(lat,lon,h)
+		delta_within(t,x, 1110000,   10.0)
+		delta_within(t,y,-4860000.0, 10.0)
+		delta_within(t,z, 3960000.0, 10.0)
+
+	}
+
+	{ 
+		lat, lon, h := 37.89038,  126.73316,  23.
+		x, y, z :=  e1.ToECEF(lat,lon,h)
+		
+		delta_within(t,x, -3014326.6,   10.0)
+		delta_within(t,y, 4039148.7, 10.0)
+		delta_within(t,z, 3895863.0, 10.0)
+
+	}
+
 }
