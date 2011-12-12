@@ -1,5 +1,7 @@
 # ellipsoid.go
 
+NOTE: Added ToLLA and ToECEF functions that are not yet documented here.
+
 ellipsoid.go performs latitude and longitude calculations 
 on the surface of an ellipsoid.
 
@@ -120,3 +122,5 @@ This package has no other website other than github.
 ## Bugs and Limitations
 
 Only To and At-functions are implemented from the Geo-Ellipsoid-package.
+
+
