@@ -1,12 +1,3 @@
-// This is a Go conversion of an existing Perl conversion 
-// of existing Fortran code (see ACKNOWLEDGEMENTS) and the 
-// author of this class makes no claims of originality. Nor 
-// can he even vouch for the results of the calculations, 
-// although they do seem to work for him and have been 
-// tested against other methods.
-
-// ellipsoid performs latitude and longitude calculations 
-// on the surface of an ellipsoid.
 package ellipsoid
 
 // Version 1.0 based on Geo::Ellipsoid Version 1.12.
@@ -139,26 +130,38 @@ Example:
 */
 func Init(name string, units int, dist_units int, long_sym bool, bear_sym bool) (e Ellipsoid) {
 	m := map[string]ellipse{
-		"AIRY":               ellipse{6377563.396, 299.3249646},
-		"AIRY-MODIFIED":      ellipse{6377340.189, 299.3249646},
-		"AUSTRALIAN":         ellipse{6378160.0, 298.25},
-		"BESSEL-1841":        ellipse{6377397.155, 299.1528128},
-		"CLARKE-1880":        ellipse{6378249.145, 293.465},
-		"EVEREST-1830":       ellipse{6377276.345, 300.8017},
-		"EVEREST-MODIFIED":   ellipse{6377304.063, 300.8017},
-		"FISHER-1960":        ellipse{6378166.0, 298.3},
-		"FISHER-1968":        ellipse{6378150.0, 298.3},
-		"GRS80":              ellipse{6378137.0, 298.25722210088},
-		"HOUGH-1956":         ellipse{6378270.0, 297.0},
-		"HAYFORD":            ellipse{6378388.0, 297.0},
-		"IAU76":              ellipse{6378140.0, 298.257},
-		"KRASSOVSKY-1938":    ellipse{6378245.0, 298.3},
-		"NAD27":              ellipse{6378206.4, 294.9786982138},
-		"NWL-9D":             ellipse{6378145.0, 298.25},
-		"SOUTHAMERICAN-1969": ellipse{6378160.0, 298.25},
-		"SOVIET-1985":        ellipse{6378136.0, 298.257},
-		"WGS72":              ellipse{6378135.0, 298.26},
-		"WGS84":              ellipse{6378137.0, 298.257223563}}
+		"AIRY":                  ellipse{6377563.396, 299.3249646},
+		"AIRY-MODIFIED":         ellipse{6377340.189, 299.3249646},
+		"AUSTRALIAN":            ellipse{6378160.0,   298.25},
+		"BESSEL-1841":           ellipse{6377397.155, 299.1528128},
+		"BESSEL-1841-NAMIBIA":   ellipse{6377483.865, 299.152813},
+		"CLARKE-1866":           ellipse{6378206.400, 294.978698},
+		"CLARKE-1880":           ellipse{6378249.145, 293.465},
+		"EVEREST-1830":          ellipse{6377276.345, 300.8017},
+		"EVEREST-1948":          ellipse{6377304.063, 300.8017},
+		"EVEREST-SABAH-SARAWAK": ellipse{6377298.556, 300.801700 },
+		"EVEREST-1956":          ellipse{6377301.243, 300.801700 },
+		"EVEREST-1969":          ellipse{6377295.664, 300.801700 },
+		"FISHER-1960":           ellipse{6378166.0,   298.3},
+		"FISCHER-1960-MODIFIED": ellipse{6378155.000, 298.300000 },
+		"FISHER-1968":           ellipse{6378150.0,   298.3},
+		"GRS80":                 ellipse{6378137.0,   298.25722210088},
+		"HELMERT-1906":          ellipse{6378200.000, 298.300000 },
+		"HOUGH-1956":            ellipse{6378270.0,   297.0},
+		"HAYFORD":               ellipse{6378388.0,   297.0},
+		"IAU76":                 ellipse{6378140.0,   298.257},
+		"INTERNATIONAL":         ellipse{6378388.000, 297.000000 },
+		"KRASSOVSKY-1938":       ellipse{6378245.0,   298.3},
+		"NAD27":                 ellipse{6378206.4,   294.9786982138},
+		"NWL-9D":                ellipse{6378145.0,   298.25},
+		"SGS85":                 ellipse{6378136.000, 298.257000 },
+		"SOUTHAMERICAN-1969":    ellipse{6378160.0,   298.25},
+		"SOVIET-1985":           ellipse{6378136.0,   298.257},
+		"WGS60":                 ellipse{6378165.000, 298.300000 },
+		"WGS66":                 ellipse{6378145.000, 298.250000 },
+		"WGS72":                 ellipse{6378135.0,   298.26},
+		"WGS84":                 ellipse{6378137.0,   298.257223563},
+	}
 
 	e2, ok := m[name]
 	if !ok {
@@ -499,6 +502,85 @@ func (ellipsoid Ellipsoid) calculateBearing(lat1, lon1, lat2, lon2 float64) (dis
 	distance, bearing = s, faz
 	return
 }
+
+func (ellipsoid Ellipsoid) ToLLA(x, y, z float64) (lat1, lon1, alt1 float64) {
+
+	if (x == 0) {
+		fmt.Printf("FATAL: Caught x==0 (div by zero).\n")
+		return
+	}
+
+	a := ellipsoid.Ellipse.Equatorial
+	f := 1 / ellipsoid.Ellipse.Inv_flattening
+
+	b := a * (1.0 - f)
+	e  := math.Sqrt( (a*a - b*b) / (a*a) )
+	e2 := math.Sqrt( (a*a - b*b) / (b*b) ) // e'
+	esq   := e*e   // e squared
+	e2sq  := e2*e2 // e' squared
+	p := math.Sqrt( x*x + y*y )
+	
+	theta := math.Atan2(z * a, p * b)
+	stheta3 := math.Sin(theta)*math.Sin(theta)*math.Sin(theta)
+	ctheta3 := math.Cos(theta)*math.Cos(theta)*math.Cos(theta)
+	
+	lon1 = math.Atan2(y, x)
+	phi := math.Atan2(z + e2sq * b * stheta3 , p - esq * a * ctheta3)
+	lat1 = phi
+
+	sphisq := math.Sin(phi) * math.Sin(phi)
+	N := a / (math.Sqrt(1 - esq * sphisq))
+	alt1 = p / math.Cos(phi) - N
+
+	if ellipsoid.Longitude_symmetric == Longitude_is_symmetric {
+		if lon1 > pi {
+			lon1 -= twopi
+		}
+	}
+	if ellipsoid.Longitude_symmetric == Longitude_not_symmetric {
+		if lon1 < 0.0 {
+			lon1 += twopi
+		}
+	}
+
+	if ellipsoid.Units == Degrees {
+		lat1 = rad2deg(lat1)
+		lon1 = rad2deg(lon1)
+	}
+	return lat1, lon1, alt1
+}
+
+func (ellipsoid Ellipsoid) ToECEF(lat1, lon1, alt1 float64) (x, y, z float64) {
+	a := ellipsoid.Ellipse.Equatorial
+	f := 1 / ellipsoid.Ellipse.Inv_flattening
+
+	b := a * (1.0 - f)
+	e  := math.Sqrt( (a*a - b*b) / (a*a) )
+	esq  := e*e // e squared
+
+	if ellipsoid.Units == Degrees {
+		lat1 = deg2rad(lat1)
+		lon1 = deg2rad(lon1)
+	}
+
+	h := alt1 // renamed for convenience 
+	phi := lat1
+	lambda := lon1
+ 
+	cphi := math.Cos(phi)
+	sphi := math.Sin(phi)
+	sphisq := sphi * sphi
+	clam := math.Cos(lambda)
+	slam := math.Sin(lambda)
+	N := a / (math.Sqrt(1 - esq * sphisq))
+	x = (N + h) * cphi * clam
+	y = (N + h) * cphi * slam
+	z = ((b*b*N)/(a*a) + h ) * sphi
+
+	return x, y, z
+}
+
+
 /*
  DEFINED ELLIPSOIDS
 
@@ -528,6 +610,8 @@ semi-major axis in meters and the reciprocal flattening as shown.
     SOVIET-1985          6378136.0           298.257
     WGS72                6378135.0           298.26
     WGS84                6378137.0           298.257223563
+
+plus a few more ...
 
  LIMITATIONS
 
@@ -580,3 +664,4 @@ This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl.
 
 */
+
