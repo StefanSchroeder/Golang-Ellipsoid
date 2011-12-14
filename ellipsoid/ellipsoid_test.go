@@ -247,8 +247,6 @@ func TestAt(t *testing.T) {
 
 }
 
-
-
 type testobject_to struct {
 	lat1 float64
 	lon1 float64
@@ -258,7 +256,6 @@ type testobject_to struct {
 	b float64 // bearing
 	tol float64 // tolerance
 }
-
 
 func TestTo(t *testing.T) {
 	e := Init("WGS84", Degrees, Meter, Longitude_is_symmetric, Bearing_not_symmetric)
@@ -566,67 +563,50 @@ func testAirport(t *testing.T) {
 }
 
 func TestToLLA(t *testing.T) {
-	
+
 	e1 := Init("WGS84", Degrees, Meter, Longitude_is_symmetric, Bearing_not_symmetric)
-	{
-		x, y, z := -742507.1, -5462738.5, 3196706.5
+		    //  http://sysense.net/products/ecef_lla_converter/index.html
+        all_tests := []testobject_ToECEF{
+		 { 30.2746722, -97.7403306, 0.0, -742507.1, -5462738.5, 3196706.5},
+		 { 38.649882, -77.134602, -3261.28, 1110000., -4860000., 3960000. , },
+		 { 37.89038, 126.73316, 23.0, -3014326.6, 4039148.7, 3895863.  } }
 
-		lat, lon, h := e1.ToLLA(x, y, z)
-
-		delta_within(t, lat,  30.2746722, 10.0)
-		delta_within(t, lon, -97.7403306, 10.0)
-		delta_within(t, h, 0.0, 10.0)
-	}
-	
-	{ // These values were verified with 
-	  //  http://sysense.net/products/ecef_lla_converter/index.html
-		x, y, z :=  1110000., -4860000., 3960000.
-		
-		lat, lon, h := e1.ToLLA(x, y, z)
-
-		delta_within(t, lat,  38.649882, 10.0)
-		delta_within(t, lon, -77.134602, 10.0)
-		delta_within(t, h, -3261.28, 10.0)
-	}
-	{ 
-		x, y, z :=  -3014326.6, 4039148.7, 3895863.
-		
-		lat, lon, h := e1.ToLLA(x, y, z)
-
-		delta_within(t, lat,  37.89038, 10.0)
-		delta_within(t, lon, 126.73316, 10.0)
-		delta_within(t, h, 23, 10.0)
+	for _, v := range all_tests {
+		lat, lon, h := e1.ToLLA(v.x, v.y, v.z)
+		delta_within(t, lat, v.lat, 1.0)
+		delta_within(t, lon, v.lon, 1.0)
+		delta_within(t, h, v.h, 1.0)
 	}
 }
 
+type testobject_ToECEF struct {
+	lat float64
+	lon float64
+	h float64
+	x float64
+	y float64
+	z float64
+}
+
 func TestToECEF(t *testing.T) {
-	
+
 	e1 := Init("WGS84", Degrees, Meter, Longitude_is_symmetric, Bearing_not_symmetric)
-	{
-		lat, lon, h := 30.2746722, -97.7403306, 0.0
-		x, y, z := e1.ToECEF(lat,lon,h)
-		delta_within(t,x,-742507.1,10.0)
-		delta_within(t,y,-5462738.5,10.0)
-		delta_within(t,z, 3196706.5,10.0)
-	}
-	
-	{
-		lat, lon, h := 38.649882, -77.134602, -3261.28
-		x, y, z := e1.ToECEF(lat,lon,h)
-		delta_within(t,x, 1110000,   10.0)
-		delta_within(t,y,-4860000.0, 10.0)
-		delta_within(t,z, 3960000.0, 10.0)
 
+        all_tests := []testobject_ToECEF{
+		{30.2746722, -97.7403306, 0.0,-742507.1,-5462738.5,3196706.5},
+		{38.649882, -77.134602, -3261.28 , 1110000 ,-4860000.0 , 3960000.0},
+		{37.89038,  126.73316,  23., -3014326.6 , 4039148.7 , 3895863.0},
+		{0.0, 0.0,  0.0, 6.378137e+06 , 0.0 , 0.0},
+		{90.0, 0.0,  0.0, 0.0 , 0.0 , 6356752.0},
+		{-90.0, 0.0,  0.0, 0.0 , 0.0 , -6356752.0},
+		{0.0, 90.0,  0.0, 0.0 , 6378137.0 , 0.0} }
+
+	for _, v := range all_tests {
+		x, y, z := e1.ToECEF(v.lat, v.lon, v.h)
+		delta_within(t, x, v.x, 10.0)
+		delta_within(t, y, v.y, 10.0)
+		delta_within(t, z, v.z, 10.0)
 	}
 
-	{ 
-		lat, lon, h := 37.89038,  126.73316,  23.
-		x, y, z :=  e1.ToECEF(lat,lon,h)
-		
-		delta_within(t,x, -3014326.6,   10.0)
-		delta_within(t,y, 4039148.7, 10.0)
-		delta_within(t,z, 3895863.0, 10.0)
-
-	}
 
 }
