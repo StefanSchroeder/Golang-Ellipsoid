@@ -1,6 +1,7 @@
 package ellipsoid
 
 // Version 1.0 based on Geo::Ellipsoid Version 1.12.
+// Version 1.1 Added ECEF functions.
 
 /*
 
@@ -62,45 +63,45 @@ import "math"
 import "fmt"
 
 const (
-	pi                      = math.Pi
-	twopi                   = math.Pi * 2.0
-	max_loop_count          = 20
-	eps                     = 1.0e-23
-	debug                   = false
-	Meter                   = 0 //    1.0    meter
-	Foot                    = 1 //    0.3048 meter are a foot
-	Kilometer               = 2 // 1000.0    meter are a kilometer
-	Mile                    = 3 // 1609.344  meter are a mile
-	Nm                      = 4 // 1852.0    meter are a nautical mile, 
-	Degrees                 = iota
-	Radians                 = iota
-	Longitude_is_symmetric  = true
-	Longitude_not_symmetric = false
-	Bearing_is_symmetric    = true
-	Bearing_not_symmetric   = false
+    pi                      = math.Pi
+    twopi                   = math.Pi * 2.0
+    max_loop_count          = 20
+    eps                     = 1.0e-23
+    debug                   = false
+    Meter                   = 0 //    1.0    meter
+    Foot                    = 1 //    0.3048 meter are a foot
+    Kilometer               = 2 // 1000.0    meter are a kilometer
+    Mile                    = 3 // 1609.344  meter are a mile
+    Nm                      = 4 // 1852.0    meter are a nautical mile, 
+    Degrees                 = iota
+    Radians                 = iota
+    Longitude_is_symmetric  = true
+    Longitude_not_symmetric = false
+    Bearing_is_symmetric    = true
+    Bearing_not_symmetric   = false
 )
 
 type Ellipsoid struct {
-	Ellipse             ellipse
-	Units               int
-	Distance_units      int
-	Longitude_symmetric bool
-	Bearing_symmetry    bool
-	Distance_factor     float64
-	// Having the Distance_factor AND the Distance_units in this struct is redundant
-	// but it looks nicer in the code.
+    Ellipse             ellipse
+    Units               int
+    Distance_units      int
+    Longitude_symmetric bool
+    Bearing_symmetry    bool
+    Distance_factor     float64
+    // Having the Distance_factor AND the Distance_units in this struct is redundant
+    // but it looks nicer in the code.
 }
 
 type ellipse struct {
-	Equatorial     float64
-	Inv_flattening float64
+    Equatorial     float64
+    Inv_flattening float64
 }
 
 func deg2rad(d float64) (r float64) {
-	return d * pi / 180.0
+    return d * pi / 180.0
 }
 func rad2deg(d float64) (r float64) {
-	return d * 180.0 / pi
+    return d * 180.0 / pi
 }
 
 /* Init
@@ -129,49 +130,49 @@ Example:
 
 */
 func Init(name string, units int, dist_units int, long_sym bool, bear_sym bool) (e Ellipsoid) {
-	m := map[string]ellipse{
-		"AIRY":                  ellipse{6377563.396, 299.3249646},
-		"AIRY-MODIFIED":         ellipse{6377340.189, 299.3249646},
-		"AUSTRALIAN":            ellipse{6378160.0,   298.25},
-		"BESSEL-1841":           ellipse{6377397.155, 299.1528128},
-		"BESSEL-1841-NAMIBIA":   ellipse{6377483.865, 299.152813},
-		"CLARKE-1866":           ellipse{6378206.400, 294.978698},
-		"CLARKE-1880":           ellipse{6378249.145, 293.465},
-		"EVEREST-1830":          ellipse{6377276.345, 300.8017},
-		"EVEREST-1948":          ellipse{6377304.063, 300.8017},
-		"EVEREST-SABAH-SARAWAK": ellipse{6377298.556, 300.801700 },
-		"EVEREST-1956":          ellipse{6377301.243, 300.801700 },
-		"EVEREST-1969":          ellipse{6377295.664, 300.801700 },
-		"FISHER-1960":           ellipse{6378166.0,   298.3},
-		"FISCHER-1960-MODIFIED": ellipse{6378155.000, 298.300000 },
-		"FISHER-1968":           ellipse{6378150.0,   298.3},
-		"GRS80":                 ellipse{6378137.0,   298.25722210088},
-		"HELMERT-1906":          ellipse{6378200.000, 298.300000 },
-		"HOUGH-1956":            ellipse{6378270.0,   297.0},
-		"HAYFORD":               ellipse{6378388.0,   297.0},
-		"IAU76":                 ellipse{6378140.0,   298.257},
-		"INTERNATIONAL":         ellipse{6378388.000, 297.000000 },
-		"KRASSOVSKY-1938":       ellipse{6378245.0,   298.3},
-		"NAD27":                 ellipse{6378206.4,   294.9786982138},
-		"NWL-9D":                ellipse{6378145.0,   298.25},
-		"SGS85":                 ellipse{6378136.000, 298.257000 },
-		"SOUTHAMERICAN-1969":    ellipse{6378160.0,   298.25},
-		"SOVIET-1985":           ellipse{6378136.0,   298.257},
-		"WGS60":                 ellipse{6378165.000, 298.300000 },
-		"WGS66":                 ellipse{6378145.000, 298.250000 },
-		"WGS72":                 ellipse{6378135.0,   298.26},
-		"WGS84":                 ellipse{6378137.0,   298.257223563},
-	}
+    m := map[string]ellipse{
+        "AIRY":                  {6377563.396, 299.3249646},
+        "AIRY-MODIFIED":         {6377340.189, 299.3249646},
+        "AUSTRALIAN":            {6378160.0, 298.25},
+        "BESSEL-1841":           {6377397.155, 299.1528128},
+        "BESSEL-1841-NAMIBIA":   {6377483.865, 299.152813},
+        "CLARKE-1866":           {6378206.400, 294.978698},
+        "CLARKE-1880":           {6378249.145, 293.465},
+        "EVEREST-1830":          {6377276.345, 300.8017},
+        "EVEREST-1948":          {6377304.063, 300.8017},
+        "EVEREST-SABAH-SARAWAK": {6377298.556, 300.801700},
+        "EVEREST-1956":          {6377301.243, 300.801700},
+        "EVEREST-1969":          {6377295.664, 300.801700},
+        "FISHER-1960":           {6378166.0, 298.3},
+        "FISCHER-1960-MODIFIED": {6378155.000, 298.300000},
+        "FISHER-1968":           {6378150.0, 298.3},
+        "GRS80":                 {6378137.0, 298.25722210088},
+        "HELMERT-1906":          {6378200.000, 298.300000},
+        "HOUGH-1956":            {6378270.0, 297.0},
+        "HAYFORD":               {6378388.0, 297.0},
+        "IAU76":                 {6378140.0, 298.257},
+        "INTERNATIONAL":         {6378388.000, 297.000000},
+        "KRASSOVSKY-1938":       {6378245.0, 298.3},
+        "NAD27":                 {6378206.4, 294.9786982138},
+        "NWL-9D":                {6378145.0, 298.25},
+        "SGS85":                 {6378136.000, 298.257000},
+        "SOUTHAMERICAN-1969":    {6378160.0, 298.25},
+        "SOVIET-1985":           {6378136.0, 298.257},
+        "WGS60":                 {6378165.000, 298.300000},
+        "WGS66":                 {6378145.000, 298.250000},
+        "WGS72":                 {6378135.0, 298.26},
+        "WGS84":                 {6378137.0, 298.257223563},
+    }
 
-	e2, ok := m[name]
-	if !ok {
-		fmt.Printf("ellipsoid.go: Warning: Invalid ellipse type '%v'\n", name)
-	}
+    e2, ok := m[name]
+    if !ok {
+        fmt.Printf("ellipsoid.go: Warning: Invalid ellipse type '%v'\n", name)
+    }
 
-	//                      m    ft      km      mi        nm
-	conversion := []float64{1.0, 0.3048, 1000.0, 1609.344, 1852.0}
-	ellipsoid := Ellipsoid{e2, units, dist_units, long_sym, bear_sym, conversion[dist_units]}
-	return ellipsoid
+    //                      m    ft      km      mi        nm
+    conversion := []float64{1.0, 0.3048, 1000.0, 1609.344, 1852.0}
+    ellipsoid := Ellipsoid{e2, units, dist_units, long_sym, bear_sym, conversion[dist_units]}
+    return ellipsoid
 }
 
 /* Intermediate
@@ -199,17 +200,17 @@ I havent tested the upper limit for steps.
 
 */
 func (ellipsoid Ellipsoid) Intermediate(lat1, lon1, lat2, lon2 float64, steps int) (distance, bearing float64, arr []float64) {
-	if steps == 0 {
-		return
-	}
-	r,phi := ellipsoid.To( lat1, lon1, lat2, lon2 )
-	var v []float64 = make([]float64, steps * 2 + 2)
-	for i :=0; i <= steps ; i++ {
-		a,b := ellipsoid.At(lat1, lon1, r * float64(i)/float64(steps) , phi)
-		v[i*2], v[i*2+1] = a,b
-	}
-	arr = v
-	return r, phi, arr
+    if steps == 0 {
+        return
+    }
+    r, phi := ellipsoid.To(lat1, lon1, lat2, lon2)
+    var v []float64 = make([]float64, steps*2+2)
+    for i := 0; i <= steps; i++ {
+        a, b := ellipsoid.At(lat1, lon1, r*float64(i)/float64(steps), phi)
+        v[i*2], v[i*2+1] = a, b
+    }
+    arr = v
+    return r, phi, arr
 
 }
 
@@ -222,21 +223,21 @@ Returns range, bearing between two specified locations.
 */
 func (ellipsoid Ellipsoid) To(lat1, lon1, lat2, lon2 float64) (distance, bearing float64) {
 
-	if ellipsoid.Units == Degrees {
-		lat1 = deg2rad(lat1)
-		lon1 = deg2rad(lon1)
-		lat2 = deg2rad(lat2)
-		lon2 = deg2rad(lon2)
-	}
+    if ellipsoid.Units == Degrees {
+        lat1 = deg2rad(lat1)
+        lon1 = deg2rad(lon1)
+        lat2 = deg2rad(lat2)
+        lon2 = deg2rad(lon2)
+    }
 
-	distance, bearing = ellipsoid.calculateBearing(lat1, lon1, lat2, lon2)
-	if ellipsoid.Units == Degrees {
-		bearing = rad2deg(bearing)
-	}
+    distance, bearing = ellipsoid.calculateBearing(lat1, lon1, lat2, lon2)
+    if ellipsoid.Units == Degrees {
+        bearing = rad2deg(bearing)
+    }
 
-	distance /= ellipsoid.Distance_factor
+    distance /= ellipsoid.Distance_factor
 
-	return
+    return
 }
 
 /* At
@@ -249,337 +250,336 @@ specified range and bearing from a given location.
 */
 func (ellipsoid Ellipsoid) At(lat1, lon1, distance, bearing float64) (lat2, lon2 float64) {
 
-	if ellipsoid.Units == Degrees {
-		lat1 = deg2rad(lat1)
-		lon1 = deg2rad(lon1)
-		bearing = deg2rad(bearing)
-	}
+    if ellipsoid.Units == Degrees {
+        lat1 = deg2rad(lat1)
+        lon1 = deg2rad(lon1)
+        bearing = deg2rad(bearing)
+    }
 
-	lat2, lon2 = ellipsoid.calculateTargetlocation(lat1, lon1, distance, bearing)
+    lat2, lon2 = ellipsoid.calculateTargetlocation(lat1, lon1, distance, bearing)
 
-	if ellipsoid.Longitude_symmetric == Longitude_is_symmetric {
-		if lon2 > pi {
-			lon2 -= twopi
-		}
-	}
-	if ellipsoid.Longitude_symmetric == Longitude_not_symmetric {
-		if lon2 < 0.0 {
-			lon2 += twopi
-		}
-	}
+    if ellipsoid.Longitude_symmetric == Longitude_is_symmetric {
+        if lon2 > pi {
+            lon2 -= twopi
+        }
+    }
+    if ellipsoid.Longitude_symmetric == Longitude_not_symmetric {
+        if lon2 < 0.0 {
+            lon2 += twopi
+        }
+    }
 
-	if ellipsoid.Units == Degrees {
-		lat2 = rad2deg(lat2)
-		lon2 = rad2deg(lon2)
-	}
+    if ellipsoid.Units == Degrees {
+        lat2 = rad2deg(lat2)
+        lon2 = rad2deg(lon2)
+    }
 
-	return
+    return
 }
 
 func (ellipsoid Ellipsoid) calculateTargetlocation(lat1, lon1, distance, bearing float64) (lat2, lon2 float64) {
 
-	if debug == true {
-		fmt.Printf("_forward(lat1=%v,lon1=%v,range=%v,bearing=%v)\n", lat1, lon1, distance, bearing)
-	}
+    if debug == true {
+        fmt.Printf("_forward(lat1=%v,lon1=%v,range=%v,bearing=%v)\n", lat1, lon1, distance, bearing)
+    }
 
-	eps := 0.5e-13
+    eps := 0.5e-13
 
-	a := ellipsoid.Ellipse.Equatorial
-	f := 1 / ellipsoid.Ellipse.Inv_flattening
-	r := 1.0 - f
+    a := ellipsoid.Ellipse.Equatorial
+    f := 1 / ellipsoid.Ellipse.Inv_flattening
+    r := 1.0 - f
 
-	clat1 := math.Cos(lat1)
-	if clat1 == 0 {
-		fmt.Printf("WARNING: Division by Zero in ellipsoid.go.\n")
-		return 0.0, 0.0
-	}
-	tu := r * math.Sin(lat1) / clat1
-	faz := bearing
+    clat1 := math.Cos(lat1)
+    if clat1 == 0 {
+        fmt.Printf("WARNING: Division by Zero in ellipsoid.go.\n")
+        return 0.0, 0.0
+    }
+    tu := r * math.Sin(lat1) / clat1
+    faz := bearing
 
-	s := ellipsoid.Distance_factor * distance
+    s := ellipsoid.Distance_factor * distance
 
-	sf := math.Sin(faz)
-	cf := math.Cos(faz)
+    sf := math.Sin(faz)
+    cf := math.Cos(faz)
 
-	baz := 0.0
-	if cf != 0.0 {
-		baz = 2.0 * math.Atan2(tu, cf)
-	}
+    baz := 0.0
+    if cf != 0.0 {
+        baz = 2.0 * math.Atan2(tu, cf)
+    }
 
-	cu := 1.0 / math.Sqrt(1.0+tu*tu)
-	su := tu * cu
-	sa := cu * sf
-	c2a := 1.0 - (sa * sa)
-	x := 1.0 + math.Sqrt((((1.0/(r*r))-1.0)*c2a)+1.0)
-	x = (x - 2.0) / x
-	c := 1.0 - x
-	c = (((x * x) / 4.0) + 1.0) / c
-	d := x * ((0.375 * x * x) - 1.0)
-	tu = ((s / r) / a) / c
-	y := tu
+    cu := 1.0 / math.Sqrt(1.0+tu*tu)
+    su := tu * cu
+    sa := cu * sf
+    c2a := 1.0 - (sa * sa)
+    x := 1.0 + math.Sqrt((((1.0/(r*r))-1.0)*c2a)+1.0)
+    x = (x - 2.0) / x
+    c := 1.0 - x
+    c = (((x * x) / 4.0) + 1.0) / c
+    d := x * ((0.375 * x * x) - 1.0)
+    tu = ((s / r) / a) / c
+    y := tu
 
-	if debug == true {
-		fmt.Printf("r=%.8f, tu=%.8f, faz=%.8f\n", r, tu, faz)
-		fmt.Printf("baz=%.8f, sf=%.8f, cf=%.8f\n", baz, sf, cf)
-		fmt.Printf("cu=%.8f, su=%.8f, sa=%.8f\n", cu, su, sa)
-		fmt.Printf("x=%.8f, c=%.8f, y=%.8f\n", x, c, y)
-	}
+    if debug == true {
+        fmt.Printf("r=%.8f, tu=%.8f, faz=%.8f\n", r, tu, faz)
+        fmt.Printf("baz=%.8f, sf=%.8f, cf=%.8f\n", baz, sf, cf)
+        fmt.Printf("cu=%.8f, su=%.8f, sa=%.8f\n", cu, su, sa)
+        fmt.Printf("x=%.8f, c=%.8f, y=%.8f\n", x, c, y)
+    }
 
-	var cy, cz, e, sy float64
-	for true {
-		sy = math.Sin(y)
-		cy = math.Cos(y)
-		cz = math.Cos(baz + y)
-		e = (2.0 * cz * cz) - 1.0
-		c = y
-		x = e * cy
-		y = (2.0 * e) - 1.0
-		y = (((((((((sy * sy * 4.0) - 3.0) * y * cz * d) / 6.0) + x) * d) / 4.0) - cz) * sy * d) + tu
+    var cy, cz, e, sy float64
+    for true {
+        sy = math.Sin(y)
+        cy = math.Cos(y)
+        cz = math.Cos(baz + y)
+        e = (2.0 * cz * cz) - 1.0
+        c = y
+        x = e * cy
+        y = (2.0 * e) - 1.0
+        y = (((((((((sy * sy * 4.0) - 3.0) * y * cz * d) / 6.0) + x) * d) / 4.0) - cz) * sy * d) + tu
 
-		if math.Fabs(y-c) <= eps {
-			break
-		}
-	}
-	baz = (cu * cy * cf) - (su * sy)
-	c = r * math.Sqrt((sa*sa)+(baz*baz))
-	d = su*cy + cu*sy*cf
-	lat2 = math.Atan2(d, c)
-	c = cu*cy - su*sy*cf
-	x = math.Atan2(sy*sf, c)
-	c = (((((-3.0 * c2a) + 4.0) * f) + 4.0) * c2a * f) / 16.0
-	d = ((((e * cy * c) + cz) * sy * c) + y) * sa
-	lon2 = lon1 + x - (1.0-c)*d*f
+        if math.Fabs(y-c) <= eps {
+            break
+        }
+    }
+    baz = (cu * cy * cf) - (su * sy)
+    c = r * math.Sqrt((sa*sa)+(baz*baz))
+    d = su*cy + cu*sy*cf
+    lat2 = math.Atan2(d, c)
+    c = cu*cy - su*sy*cf
+    x = math.Atan2(sy*sf, c)
+    c = (((((-3.0 * c2a) + 4.0) * f) + 4.0) * c2a * f) / 16.0
+    d = ((((e * cy * c) + cz) * sy * c) + y) * sa
+    lon2 = lon1 + x - (1.0-c)*d*f
 
-	if debug == true {
-		fmt.Printf("returns(lat2=%v,lon2=%v)\n", lat2, lon2)
-	}
-	return lat2, lon2
+    if debug == true {
+        fmt.Printf("returns(lat2=%v,lon2=%v)\n", lat2, lon2)
+    }
+    return lat2, lon2
 }
 
 func (ellipsoid Ellipsoid) calculateBearing(lat1, lon1, lat2, lon2 float64) (distance, bearing float64) {
-	a := ellipsoid.Ellipse.Equatorial
-	f := 1 / ellipsoid.Ellipse.Inv_flattening
+    a := ellipsoid.Ellipse.Equatorial
+    f := 1 / ellipsoid.Ellipse.Inv_flattening
 
-	if lon1 < 0 {
-		lon1 += twopi
-	}
-	if lon2 < 0 {
-		lon2 += twopi
-	}
+    if lon1 < 0 {
+        lon1 += twopi
+    }
+    if lon2 < 0 {
+        lon2 += twopi
+    }
 
-	r := 1.0 - f
-	clat1 := math.Cos(lat1)
-	if clat1 == 0 {
-		fmt.Printf("WARNING: Division by Zero in ellipsoid.go.\n")
-		return 0.0, 0.0
-	}
-	clat2 := math.Cos(lat2)
-	if clat2 == 0 {
-		fmt.Printf("WARNING: Division by Zero in ellipsoid.go.\n")
-		return 0.0, 0.0
-	}
-	tu1 := r * math.Sin(lat1) / clat1
-	tu2 := r * math.Sin(lat2) / clat2
-	cu1 := 1.0 / (math.Sqrt((tu1 * tu1) + 1.0))
-	su1 := cu1 * tu1
-	cu2 := 1.0 / (math.Sqrt((tu2 * tu2) + 1.0))
-	s := cu1 * cu2
-	baz := s * tu2
-	faz := baz * tu1
-	dlon := lon2 - lon1
+    r := 1.0 - f
+    clat1 := math.Cos(lat1)
+    if clat1 == 0 {
+        fmt.Printf("WARNING: Division by Zero in ellipsoid.go.\n")
+        return 0.0, 0.0
+    }
+    clat2 := math.Cos(lat2)
+    if clat2 == 0 {
+        fmt.Printf("WARNING: Division by Zero in ellipsoid.go.\n")
+        return 0.0, 0.0
+    }
+    tu1 := r * math.Sin(lat1) / clat1
+    tu2 := r * math.Sin(lat2) / clat2
+    cu1 := 1.0 / (math.Sqrt((tu1 * tu1) + 1.0))
+    su1 := cu1 * tu1
+    cu2 := 1.0 / (math.Sqrt((tu2 * tu2) + 1.0))
+    s := cu1 * cu2
+    baz := s * tu2
+    faz := baz * tu1
+    dlon := lon2 - lon1
 
-	if debug == true {
-		fmt.Printf("a=%v, f=%v\n", a, f)
-		fmt.Printf("lat1=%v, lon1=%v\n", lat1, lon1)
-		fmt.Printf("lat2=%v, lon2=%v\n", lat2, lon2)
+    if debug == true {
+        fmt.Printf("a=%v, f=%v\n", a, f)
+        fmt.Printf("lat1=%v, lon1=%v\n", lat1, lon1)
+        fmt.Printf("lat2=%v, lon2=%v\n", lat2, lon2)
 
-		fmt.Printf("r=%v, tu1=%v, tu2=%v\n", r, tu1, tu2)
-		fmt.Printf("faz=%.8f, dlon=%.8f, su1=%v\n", faz, dlon, su1)
-	}
+        fmt.Printf("r=%v, tu1=%v, tu2=%v\n", r, tu1, tu2)
+        fmt.Printf("faz=%.8f, dlon=%.8f, su1=%v\n", faz, dlon, su1)
+    }
 
-	x := dlon
-	cnt := 0
+    x := dlon
+    cnt := 0
 
-	var c2a, c, cx, cy, cz, d, del, e, sx, sy, y float64
-	// This originally was a do-while loop. Exit condition is at end of loop.
-	for true {
-		if debug == true {
-			fmt.Printf("  x=%.8f\n", x)
-		}
-		sx = math.Sin(x)
-		cx = math.Cos(x)
-		tu1 = cu2 * sx
-		tu2 = baz - (su1 * cu2 * cx)
+    var c2a, c, cx, cy, cz, d, del, e, sx, sy, y float64
+    // This originally was a do-while loop. Exit condition is at end of loop.
+    for true {
+        if debug == true {
+            fmt.Printf("  x=%.8f\n", x)
+        }
+        sx = math.Sin(x)
+        cx = math.Cos(x)
+        tu1 = cu2 * sx
+        tu2 = baz - (su1 * cu2 * cx)
 
-		if debug == true {
-			fmt.Printf("    sx=%.8f, cx=%.8f, tu1=%.8f, tu2=%.8f\n", sx, cx, tu1, tu2)
-		}
+        if debug == true {
+            fmt.Printf("    sx=%.8f, cx=%.8f, tu1=%.8f, tu2=%.8f\n", sx, cx, tu1, tu2)
+        }
 
-		sy = math.Sqrt(tu1*tu1 + tu2*tu2)
-		cy = s*cx + faz
-		y = math.Atan2(sy, cy)
-		var sa float64
-		if sy == 0.0 {
-			sa = 1.0
-		} else {
-			if sy == 0 {
-				fmt.Printf("WARNING: Division by Zero in ellipsoid.go.\n")
-				return 0.0, 0.0
-			}
-			sa = (s * sx) / sy
-		}
+        sy = math.Sqrt(tu1*tu1 + tu2*tu2)
+        cy = s*cx + faz
+        y = math.Atan2(sy, cy)
+        var sa float64
+        if sy == 0.0 {
+            sa = 1.0
+        } else {
+            if sy == 0 {
+                fmt.Printf("WARNING: Division by Zero in ellipsoid.go.\n")
+                return 0.0, 0.0
+            }
+            sa = (s * sx) / sy
+        }
 
-		if debug == true {
-			fmt.Printf("    sy=%.8f, cy=%.8f, y=%.8f, sa=%.8f\n", sy, cy, y, sa)
-		}
+        if debug == true {
+            fmt.Printf("    sy=%.8f, cy=%.8f, y=%.8f, sa=%.8f\n", sy, cy, y, sa)
+        }
 
-		c2a = 1.0 - (sa * sa)
-		cz = faz + faz
-		if c2a > 0.0 {
-			cz = ((-cz) / c2a) + cy
-		}
-		e = (2.0 * cz * cz) - 1.0
-		c = (((((-3.0 * c2a) + 4.0) * f) + 4.0) * c2a * f) / 16.0
-		d = x
-		x = ((e*cy*c+cz)*sy*c + y) * sa
-		x = (1.0-c)*x*f + dlon
-		del = d - x
+        c2a = 1.0 - (sa * sa)
+        cz = faz + faz
+        if c2a > 0.0 {
+            cz = ((-cz) / c2a) + cy
+        }
+        e = (2.0 * cz * cz) - 1.0
+        c = (((((-3.0 * c2a) + 4.0) * f) + 4.0) * c2a * f) / 16.0
+        d = x
+        x = ((e*cy*c+cz)*sy*c + y) * sa
+        x = (1.0-c)*x*f + dlon
+        del = d - x
 
-		if debug == true {
-			fmt.Printf("    c2a=%.8f, cz=%.8f\n", c2a, cz)
-			fmt.Printf("    e=%.8f, d=%.8f\n", e, d)
-			fmt.Printf("    (d-x)=%.8g\n", del)
-		}
-		if math.Fabs(del) <= eps {
-			break
-		}
-		cnt++
-		if cnt > max_loop_count {
-			break
-		}
+        if debug == true {
+            fmt.Printf("    c2a=%.8f, cz=%.8f\n", c2a, cz)
+            fmt.Printf("    e=%.8f, d=%.8f\n", e, d)
+            fmt.Printf("    (d-x)=%.8g\n", del)
+        }
+        if math.Fabs(del) <= eps {
+            break
+        }
+        cnt++
+        if cnt > max_loop_count {
+            break
+        }
 
-	}
+    }
 
-	faz = math.Atan2(tu1, tu2)
-	baz = math.Atan2(cu1*sx, (baz*cx-su1*cu2)) + pi
-	x = math.Sqrt(((1.0/(r*r))-1.0)*c2a+1.0) + 1.0
-	x = (x - 2.0) / x
-	c = 1.0 - x
-	c = ((x*x)/4.0 + 1.0) / c
-	d = ((0.375 * x * x) - 1.0) * x
-	x = e * cy
+    faz = math.Atan2(tu1, tu2)
+    baz = math.Atan2(cu1*sx, (baz*cx-su1*cu2)) + pi
+    x = math.Sqrt(((1.0/(r*r))-1.0)*c2a+1.0) + 1.0
+    x = (x - 2.0) / x
+    c = 1.0 - x
+    c = ((x*x)/4.0 + 1.0) / c
+    d = ((0.375 * x * x) - 1.0) * x
+    x = e * cy
 
-	if debug == true {
-		fmt.Printf("e=%.8f, cy=%.8f, x=%.8f\n", e, cy, x)
-		fmt.Printf("sy=%.8f, c=%.8f, d=%.8f\n", sy, c, d)
-		fmt.Printf("cz=%.8f, a=%.8f, r=%.8f\n", cz, a, r)
-	}
+    if debug == true {
+        fmt.Printf("e=%.8f, cy=%.8f, x=%.8f\n", e, cy, x)
+        fmt.Printf("sy=%.8f, c=%.8f, d=%.8f\n", sy, c, d)
+        fmt.Printf("cz=%.8f, a=%.8f, r=%.8f\n", cz, a, r)
+    }
 
-	s = 1.0 - e - e
-	s = ((((((((sy * sy * 4.0) - 3.0) * s * cz * d / 6.0) - x) * d / 4.0) + cz) * sy * d) + y) * c * a * r
+    s = 1.0 - e - e
+    s = ((((((((sy * sy * 4.0) - 3.0) * s * cz * d / 6.0) - x) * d / 4.0) + cz) * sy * d) + y) * c * a * r
 
-	if debug == true {
-		fmt.Printf("s=%.8f\n", s)
-	}
+    if debug == true {
+        fmt.Printf("s=%.8f\n", s)
+    }
 
-	// adjust azimuth to (0,360) or (-180,180) as specified
-	if ellipsoid.Bearing_symmetry == Bearing_is_symmetric {
-		if faz < -(pi) {
-			faz += twopi
-		}
-		if faz >= pi {
-			faz -= twopi
-		}
-	} else {
-		if faz < 0 {
-			faz += twopi
-		}
-		if faz >= twopi {
-			faz -= twopi
-		}
-	}
+    // adjust azimuth to (0,360) or (-180,180) as specified
+    if ellipsoid.Bearing_symmetry == Bearing_is_symmetric {
+        if faz < -(pi) {
+            faz += twopi
+        }
+        if faz >= pi {
+            faz -= twopi
+        }
+    } else {
+        if faz < 0 {
+            faz += twopi
+        }
+        if faz >= twopi {
+            faz -= twopi
+        }
+    }
 
-	distance, bearing = s, faz
-	return
+    distance, bearing = s, faz
+    return
 }
 
 func (ellipsoid Ellipsoid) ToLLA(x, y, z float64) (lat1, lon1, alt1 float64) {
 
-	if (x == 0) {
-		fmt.Printf("FATAL: Caught x==0 (div by zero).\n")
-		return
-	}
+    if x == 0 {
+        fmt.Printf("FATAL: Caught x==0 (div by zero).\n")
+        return
+    }
 
-	a := ellipsoid.Ellipse.Equatorial
-	f := 1 / ellipsoid.Ellipse.Inv_flattening
+    a := ellipsoid.Ellipse.Equatorial
+    f := 1 / ellipsoid.Ellipse.Inv_flattening
 
-	b := a * (1.0 - f)
-	e  := math.Sqrt( (a*a - b*b) / (a*a) )
-	e2 := math.Sqrt( (a*a - b*b) / (b*b) ) // e'
-	esq   := e*e   // e squared
-	e2sq  := e2*e2 // e' squared
-	p := math.Sqrt( x*x + y*y )
-	
-	theta := math.Atan2(z * a, p * b)
-	stheta3 := math.Sin(theta)*math.Sin(theta)*math.Sin(theta)
-	ctheta3 := math.Cos(theta)*math.Cos(theta)*math.Cos(theta)
-	
-	lon1 = math.Atan2(y, x)
-	phi := math.Atan2(z + e2sq * b * stheta3 , p - esq * a * ctheta3)
-	lat1 = phi
+    b := a * (1.0 - f)
+    e := math.Sqrt((a*a - b*b) / (a * a))
+    e2 := math.Sqrt((a*a - b*b) / (b * b)) // e'
+    esq := e * e                           // e squared
+    e2sq := e2 * e2                        // e' squared
+    p := math.Sqrt(x*x + y*y)
 
-	sphisq := math.Sin(phi) * math.Sin(phi)
-	N := a / (math.Sqrt(1 - esq * sphisq))
-	alt1 = p / math.Cos(phi) - N
+    theta := math.Atan2(z*a, p*b)
+    stheta3 := math.Sin(theta) * math.Sin(theta) * math.Sin(theta)
+    ctheta3 := math.Cos(theta) * math.Cos(theta) * math.Cos(theta)
 
-	if ellipsoid.Longitude_symmetric == Longitude_is_symmetric {
-		if lon1 > pi {
-			lon1 -= twopi
-		}
-	}
-	if ellipsoid.Longitude_symmetric == Longitude_not_symmetric {
-		if lon1 < 0.0 {
-			lon1 += twopi
-		}
-	}
+    lon1 = math.Atan2(y, x)
+    phi := math.Atan2(z+e2sq*b*stheta3, p-esq*a*ctheta3)
+    lat1 = phi
 
-	if ellipsoid.Units == Degrees {
-		lat1 = rad2deg(lat1)
-		lon1 = rad2deg(lon1)
-	}
-	return lat1, lon1, alt1
+    sphisq := math.Sin(phi) * math.Sin(phi)
+    N := a / (math.Sqrt(1 - esq*sphisq))
+    alt1 = p/math.Cos(phi) - N
+
+    if ellipsoid.Longitude_symmetric == Longitude_is_symmetric {
+        if lon1 > pi {
+            lon1 -= twopi
+        }
+    }
+    if ellipsoid.Longitude_symmetric == Longitude_not_symmetric {
+        if lon1 < 0.0 {
+            lon1 += twopi
+        }
+    }
+
+    if ellipsoid.Units == Degrees {
+        lat1 = rad2deg(lat1)
+        lon1 = rad2deg(lon1)
+    }
+    return lat1, lon1, alt1
 }
 
 func (ellipsoid Ellipsoid) ToECEF(lat1, lon1, alt1 float64) (x, y, z float64) {
-	a := ellipsoid.Ellipse.Equatorial
-	f := 1 / ellipsoid.Ellipse.Inv_flattening
+    a := ellipsoid.Ellipse.Equatorial
+    f := 1 / ellipsoid.Ellipse.Inv_flattening
 
-	b := a * (1.0 - f)
-	e  := math.Sqrt( (a*a - b*b) / (a*a) )
-	esq  := e*e // e squared
+    b := a * (1.0 - f)
+    e := math.Sqrt((a*a - b*b) / (a * a))
+    esq := e * e // e squared
 
-	if ellipsoid.Units == Degrees {
-		lat1 = deg2rad(lat1)
-		lon1 = deg2rad(lon1)
-	}
+    if ellipsoid.Units == Degrees {
+        lat1 = deg2rad(lat1)
+        lon1 = deg2rad(lon1)
+    }
 
-	h := alt1 // renamed for convenience 
-	phi := lat1
-	lambda := lon1
- 
-	cphi := math.Cos(phi)
-	sphi := math.Sin(phi)
-	sphisq := sphi * sphi
-	clam := math.Cos(lambda)
-	slam := math.Sin(lambda)
-	N := a / (math.Sqrt(1 - esq * sphisq))
-	x = (N + h) * cphi * clam
-	y = (N + h) * cphi * slam
-	z = ((b*b*N)/(a*a) + h ) * sphi
+    h := alt1 // renamed for convenience 
+    phi := lat1
+    lambda := lon1
 
-	return x, y, z
+    cphi := math.Cos(phi)
+    sphi := math.Sin(phi)
+    sphisq := sphi * sphi
+    clam := math.Cos(lambda)
+    slam := math.Sin(lambda)
+    N := a / (math.Sqrt(1 - esq*sphisq))
+    x = (N + h) * cphi * clam
+    y = (N + h) * cphi * slam
+    z = ((b*b*N)/(a*a) + h) * sphi
+
+    return x, y, z
 }
-
 
 /*
  DEFINED ELLIPSOIDS
@@ -664,4 +664,3 @@ This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl.
 
 */
-
