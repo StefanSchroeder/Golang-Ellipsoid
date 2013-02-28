@@ -2,6 +2,9 @@
 
 NOTE: Added ToLLA and ToECEF functions that are not yet documented here.
 
+NOTE: The package has not been made go get-friendly yet. SOme of my forkers did that, I'll catch up some day.
+Also the compilation instructions in this readme have not been updated for Go-1.0.
+
 ellipsoid.go performs latitude and longitude calculations 
 on the surface of an ellipsoid.
 
