@@ -1,12 +1,11 @@
 # ellipsoid.go
 
-NOTE: Added ToLLA and ToECEF functions that are not yet documented here.
-
 NOTE: The package has not been made go get-friendly yet. Some of my forkers did that, I'll catch up some day.
 Also the compilation instructions in this readme have not been updated for Go-1.0.
 
 ellipsoid.go performs latitude and longitude calculations 
-on the surface of an ellipsoid.
+on the surface of an ellipsoid. And converts ECEF to LLA and
+vice-versa.
 
 This is a Go conversion of an existing Perl conversion 
 of existing Fortran code (see ACKNOWLEDGEMENTS) and the 
@@ -20,6 +19,7 @@ tested against other methods.
 * Calculating distance and bearing when two locations with longitude and latitude are are given.
 * Calculate target location when one location with longitude and latitude and distance and bearing are given.
 * Supports several ellipsoids (incl. WGS84) out of the box.
+* Convert cartesian ECEF-coordinates to longitude, latitude, altitude and vice versa.
 
 ## Installation
 
@@ -48,18 +48,31 @@ Make sure you have the a working Go environment. See the [install instructions](
 		// direction 45.0 deg. for 20000 meters.
 		lat3, lon3 := geo1.At(lat1, lon1, 20000.0, 45.0)
 		fmt.Printf("lat3 = %v lon3 = %v\n", lat3, lon3)
+		
+		// Convert Lat-Lon-Alt to ECEF.
+		lat4, lon4, alt4 := 39.197807, -77.108574 , 55.0 // Some location near Baltimore
+		// that the author of the Perl module geo-ecef used. I reused the coords of the tests.
+		x, y, z := geo1.ToECEF(lat4, lon4, alt4)
+		fmt.Printf("x = %v \ny = %v \nz = %v\n", x, y, z)
+
+		// Convert ECEF to Lat-Lon-Alt.
+		x1, y1, z1 := 1.1042590709397183e+06, -4.824765955871677e+06, 4.0093940281868847e+06
+		lat5, lon5, alt5 := geo1.ToLLA(x1, y1, z1)
+		fmt.Printf("lat5 = %v lon5 = %v alt3 = %v\n", lat5, lon5, alt5)
 	}
 
 To run the application, put the code in a file called hello.go and run:
 
-    8g hello.go && 8l -o hello hello.8 && ./hello
-
-Or run the Makefile in Golang-Ellipsoid.
+    go run hello.go
 
 This should print:
 
-	Distance = 543044.190419953 Bearing = 137.50134015496275
-	lat3 = -122.21438161492877 lon3 = 37.74631054036373
+		Distance = 543044.190419953 Bearing = 137.50134015496275
+		lat3 = 37.74631054036373 lon3 = -122.21438161492877
+		x = 1.1042590709397183e+06
+		y = -4.824765955871677e+06
+		z = 4.0093940281868847e+06
+		lat5 = 39.197807 lon5 = -77.10857400000002 alt3 = 55
 
 ### Parameters
 
