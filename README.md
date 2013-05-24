@@ -119,7 +119,23 @@ That's also internally a boolean, true or false.
 
 ## To and At
 
-See examples.
+The To-Function computes the distance in meters as a Float64 and the bearing in degrees [0...360[
+as a Float64. Input parameters are the latitude and longitude of the starting point and
+latitude and longitude of the destionation. All parameters are Float64. The bearing is 
+the compass direction when standing on the starting point and looking towards the destination point.
+Obviously the compass direction is not too meaningful near the poles.
+
+	distance, bearing := geo1.To(lat1, lon1, lat2, lon2)
+
+The At-Function does interesting stuff.
+
+The Intermediate-Function does interesting stuff.
+
+The ToECEF-Function does interesting stuff.
+
+The ToLLA-Function does interesting stuff.
+
+
 
 ## Documentation
 
