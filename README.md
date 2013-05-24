@@ -73,9 +73,9 @@ This should print:
 		z = 4.0093940281868847e+06
 		lat5 = 39.197807 lon5 = -77.10857400000002 alt3 = 55
 
-### Parameters
+## Parameters
 
-## Init
+### Init
 
 The first argument is an ellipsoid from this list:
 
@@ -127,7 +127,7 @@ The fourth argument is either
 
 That's also internally a boolean, true or false.
 
-## To
+### To
 
 The To-Function computes the distance in meters as a Float64 and the bearing in degrees [0...360[
 as a Float64. Input parameters are the latitude and longitude of the starting point and
@@ -137,7 +137,7 @@ Obviously the compass direction is not too meaningful near the poles.
 
 	distance, bearing := geo1.To(lat1, lon1, lat2, lon2)
 
-## At
+### At
 
 The At-Function does interesting stuff.
 
