@@ -1,15 +1,14 @@
 # ellipsoid.go
 
 NOTE: The package has not been made go get-friendly yet. Some of my forkers did that, I'll catch up some day.
-Also the compilation instructions in this readme have not been updated for Go-1.0.
 
 ellipsoid.go performs latitude and longitude calculations 
 on the surface of an ellipsoid. And converts ECEF to LLA and
 vice-versa.
 
 This is a Go conversion of an existing Perl conversion 
-of existing Fortran code (see ACKNOWLEDGEMENTS) and the 
-author of this class makes no claims of originality. Nor 
+of existing Fortran code (To and At-functions; see ACKNOWLEDGEMENTS) and the 
+author of this package makes no claims of originality. Nor 
 can he even vouch for the results of the calculations, 
 although they do seem to work for him and have been 
 tested against other methods.
@@ -128,7 +127,7 @@ The fourth argument is either
 
 That's also internally a boolean, true or false.
 
-## To and At
+## To
 
 The To-Function computes the distance in meters as a Float64 and the bearing in degrees [0...360[
 as a Float64. Input parameters are the latitude and longitude of the starting point and
@@ -137,6 +136,8 @@ the compass direction when standing on the starting point and looking towards th
 Obviously the compass direction is not too meaningful near the poles.
 
 	distance, bearing := geo1.To(lat1, lon1, lat2, lon2)
+
+## At
 
 The At-Function does interesting stuff.
 
@@ -150,7 +151,7 @@ The ToLLA-Function does interesting stuff.
 
 ## Documentation
 
-Read the code or google for Geo::Ellipsoid, that is the Perl package
+Read the code or google for Geo::Ellipsoid, that is the Perl module
 on CPAN that this package is a port of.
 
 ## About and Acknowledgments
@@ -160,12 +161,11 @@ This package was ported from Perl to Go by Stefan Schroeder.
 Thank you to Jim Gibson for writing the Perl module Geo::Ellipsoid.
 And to the authors of the Fortran module that he ported it from.
 
-This package has no other website other than github.
+This package has no website other than github.
 
 ## Bugs and Limitations
 
 Not all functions are implemented from the Geo-Ellipsoid-package. 
-As mentioned in the license, no guarantee whatsoever for the correctness
-of the computed results can be assumed.
+
 
 
