@@ -61,9 +61,9 @@ Make sure you have the a working Go environment. See the [install instructions](
 		fmt.Printf("lat5 = %v lon5 = %v alt3 = %v\n", lat5, lon5, alt5)
 	}
 
-To run the application, put the code in a file called hello.go and run:
+To run the application, put the code in a file called hello-wgs84.go and run:
 
-    go run hello.go
+    go run hello-wgs84.go
 
 This should print:
 
@@ -80,26 +80,37 @@ This should print:
 
 The first argument is an ellipsoid from this list:
 
-	"AIRY":               ellipse{6377563.396, 299.3249646},
-	"AIRY-MODIFIED":      ellipse{6377340.189, 299.3249646},
-	"AUSTRALIAN":         ellipse{6378160.0, 298.25},
-	"BESSEL-1841":        ellipse{6377397.155, 299.1528128},
-	"CLARKE-1880":        ellipse{6378249.145, 293.465},
-	"EVEREST-1830":       ellipse{6377276.345, 300.8017},
-	"EVEREST-MODIFIED":   ellipse{6377304.063, 300.8017},
-	"FISHER-1960":        ellipse{6378166.0, 298.3},
-	"FISHER-1968":        ellipse{6378150.0, 298.3},
-	"GRS80":              ellipse{6378137.0, 298.25722210088},
-	"HOUGH-1956":         ellipse{6378270.0, 297.0},
-	"HAYFORD":            ellipse{6378388.0, 297.0},
-	"IAU76":              ellipse{6378140.0, 298.257},
-	"KRASSOVSKY-1938":    ellipse{6378245.0, 298.3},
-	"NAD27":              ellipse{6378206.4, 294.9786982138},
-	"NWL-9D":             ellipse{6378145.0, 298.25},
-	"SOUTHAMERICAN-1969": ellipse{6378160.0, 298.25},
-	"SOVIET-1985":        ellipse{6378136.0, 298.257},
-	"WGS72":              ellipse{6378135.0, 298.26},
-	"WGS84":              ellipse{6378137.0, 298.257223563}
+	"AIRY":                  {6377563.396, 299.3249646},
+        "AIRY-MODIFIED":         {6377340.189, 299.3249646},
+        "AUSTRALIAN":            {6378160.0, 298.25},
+        "BESSEL-1841":           {6377397.155, 299.1528128},
+        "BESSEL-1841-NAMIBIA":   {6377483.865, 299.152813},
+        "CLARKE-1866":           {6378206.400, 294.978698},
+        "CLARKE-1880":           {6378249.145, 293.465},
+        "EVEREST-1830":          {6377276.345, 300.8017},
+        "EVEREST-1948":          {6377304.063, 300.8017},
+        "EVEREST-SABAH-SARAWAK": {6377298.556, 300.801700},
+        "EVEREST-1956":          {6377301.243, 300.801700},
+        "EVEREST-1969":          {6377295.664, 300.801700},
+        "FISHER-1960":           {6378166.0, 298.3},
+        "FISCHER-1960-MODIFIED": {6378155.000, 298.300000},
+        "FISHER-1968":           {6378150.0, 298.3},
+        "GRS80":                 {6378137.0, 298.25722210088},
+        "HELMERT-1906":          {6378200.000, 298.300000},
+        "HOUGH-1956":            {6378270.0, 297.0},
+        "HAYFORD":               {6378388.0, 297.0},
+        "IAU76":                 {6378140.0, 298.257},
+        "INTERNATIONAL":         {6378388.000, 297.000000},
+        "KRASSOVSKY-1938":       {6378245.0, 298.3},
+        "NAD27":                 {6378206.4, 294.9786982138},
+        "NWL-9D":                {6378145.0, 298.25},
+        "SGS85":                 {6378136.000, 298.257000},
+        "SOUTHAMERICAN-1969":    {6378160.0, 298.25},
+        "SOVIET-1985":           {6378136.0, 298.257},
+        "WGS60":                 {6378165.000, 298.300000},
+        "WGS66":                 {6378145.000, 298.250000},
+        "WGS72":                 {6378135.0, 298.26},
+        "WGS84":                 {6378137.0, 298.257223563},
 
 The second argument is either 
 
@@ -121,7 +132,7 @@ That's also internally a boolean, true or false.
 
 The To-Function computes the distance in meters as a Float64 and the bearing in degrees [0...360[
 as a Float64. Input parameters are the latitude and longitude of the starting point and
-latitude and longitude of the destionation. All parameters are Float64. The bearing is 
+latitude and longitude of the destination. All parameters are Float64. The bearing is 
 the compass direction when standing on the starting point and looking towards the destination point.
 Obviously the compass direction is not too meaningful near the poles.
 
@@ -153,6 +164,8 @@ This package has no other website other than github.
 
 ## Bugs and Limitations
 
-Only To and At-functions are implemented from the Geo-Ellipsoid-package.
+Not all functions are implemented from the Geo-Ellipsoid-package. 
+As mentioned in the license, no guarantee whatsoever for the correctness
+of the computed results can be assumed.
 
 
