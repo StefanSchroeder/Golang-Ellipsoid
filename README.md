@@ -79,7 +79,7 @@ This should print:
 
 The first argument is an ellipsoid from this list:
 
-	"AIRY":                  {6377563.396, 299.3249646},
+        "AIRY":                  {6377563.396, 299.3249646},
         "AIRY-MODIFIED":         {6377340.189, 299.3249646},
         "AUSTRALIAN":            {6378160.0, 298.25},
         "BESSEL-1841":           {6377397.155, 299.1528128},
