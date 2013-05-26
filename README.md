@@ -115,11 +115,15 @@ The second argument is either
 
 	Degrees or Radians
 	
+This parameter applies to input- and output-parameters.
+	
 The third argument is either
 
 	Longitude_is_symmetric or Longitude_not_symmetric
 
-That's internally a boolean, true or false.
+That's internally a boolean, true or false. If the longitude is symmetric the
+longitude in the result of the At-function will we be in the range [-180..180],
+else (not-symmetric) the range will be [0..360].
 
 The fourth argument is either
 
