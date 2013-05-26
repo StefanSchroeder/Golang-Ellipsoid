@@ -147,11 +147,7 @@ The ToECEF-Function does interesting stuff.
 
 The ToLLA-Function does interesting stuff.
 
-
-
-## Documentation
-
-Read the code or google for Geo::Ellipsoid, that is the Perl module
+If you need background information read the code or go to Geo::Ellipsoid, that is the Perl module
 on CPAN that this package is a port of.
 
 ## About and Acknowledgments
