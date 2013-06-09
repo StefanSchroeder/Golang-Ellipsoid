@@ -1,5 +1,0 @@
-all:
-	8g ellipsoid.go
-	8g ellipsoid_test.go
-	8l -o ellipsoid_test.exe ellipsoid_test.8
-	
