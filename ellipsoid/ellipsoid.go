@@ -2,6 +2,7 @@ package ellipsoid
 
 // Version 1.0 based on Geo::Ellipsoid Version 1.12.
 // Version 1.1 Added ECEF functions.
+// Version 1.2 Replaced Fabs with Abs. 
 
 /*
 
@@ -337,7 +338,7 @@ func (ellipsoid Ellipsoid) calculateTargetlocation(lat1, lon1, distance, bearing
         y = (2.0 * e) - 1.0
         y = (((((((((sy * sy * 4.0) - 3.0) * y * cz * d) / 6.0) + x) * d) / 4.0) - cz) * sy * d) + tu
 
-        if math.Fabs(y-c) <= eps {
+        if math.Abs(y-c) <= eps {
             break
         }
     }
@@ -451,7 +452,7 @@ func (ellipsoid Ellipsoid) calculateBearing(lat1, lon1, lat2, lon2 float64) (dis
             fmt.Printf("    e=%.8f, d=%.8f\n", e, d)
             fmt.Printf("    (d-x)=%.8g\n", del)
         }
-        if math.Fabs(del) <= eps {
+        if math.Abs(del) <= eps {
             break
         }
         cnt++
