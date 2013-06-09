@@ -1,7 +1,5 @@
 # ellipsoid.go
 
-NOTE: The package has not been made go get-friendly yet. Some of my forkers did that, I'll catch up some day.
-
 ellipsoid.go performs latitude and longitude calculations 
 on the surface of an ellipsoid. And converts ECEF to LLA and
 vice-versa.
@@ -133,23 +131,53 @@ That's also internally a boolean, true or false.
 
 ### To
 
-The To-Function computes the distance in meters as a Float64 and the bearing in degrees [0...360[
-as a Float64. Input parameters are the latitude and longitude of the starting point and
+The To-Function computes the distance in the units provided to Init as a Float64 and the bearing in degrees [0...360[
+or Radian. Input parameters are the latitude and longitude of the starting point and
 latitude and longitude of the destination. All parameters are Float64. The bearing is 
-the compass direction when standing on the starting point and looking towards the destination point.
+the direction when standing on the starting point and looking towards the destination point.
 Obviously the compass direction is not too meaningful near the poles.
 
 	distance, bearing := geo1.To(lat1, lon1, lat2, lon2)
 
 ### At
 
-The At-Function does interesting stuff.
+Returns the list latitude,longitude in degrees or radians that is a
+specified range and bearing from a given location.
 
-The Intermediate-Function does interesting stuff.
+    lat2, lon2  = geo.At( lat1, lon1, range, bearing )
+
+### Intermediate
+
+Takes two coordinates with longitude and latitude; and a step count and 
+returns range and bearing and an array with the lons and lats of intermediate
+points on a straight line (whatever that is on an ellipsoid), INCLUDING the
+start and the endpoint.
+
+So if you put in point1 and point2 with step count 4, the output will be
+(you make 4 hops, right?)
+
+	point1
+	i1
+	i2
+	i3
+	point2
+
+Each point is two float64 values, lat and lon, thus you have an array
+with 4*2 + 2 = 5*2 cells.
+
+Steps shall not be 0.
+
+I havent tested the upper limit for steps.
+
+### ToECEF
 
 The ToECEF-Function does interesting stuff.
 
+### ToLLA
+
 The ToLLA-Function does interesting stuff.
+
+### Notes
 
 If you need background information read the code or go to Geo::Ellipsoid, that is the Perl module
 on CPAN that this package is a port of.
