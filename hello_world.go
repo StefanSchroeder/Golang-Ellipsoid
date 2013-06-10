@@ -1,7 +1,7 @@
 package main
 
 import "fmt"
-import "./ellipsoid"
+import "Golang-Ellipsoid/ellipsoid"
 
 func main() {
     lat1, lon1 := 37.619002, -122.374843 //SFO
@@ -34,6 +34,15 @@ func main() {
     fmt.Printf("----- Testing ToLLA\n");
     lat5, lon5, alt5 := geo1.ToLLA(x1, y1, z1)
     fmt.Printf("lat5 = %v lon5 = %v alt3 = %v\n", lat5, lon5, alt5)
+
+
+    // Displacement. Use only for small distances!
+    l1, l2 := 41.978744444444,272.096858333333
+    m1, m2 := 42.005419444444,272.073286111111
+    dx, dy := geo1.Displacement(l1,l2,m1,m2) 
+    fmt.Printf("----- Testing Displacement\n");
+    fmt.Printf("x,y=      %v %v\n", dx, dy)
+    fmt.Printf("Expected: -1952.8108885261 2963.14446772882\n")
 
     fmt.Printf("----- Done ---\n");
 }

@@ -278,6 +278,35 @@ func (ellipsoid Ellipsoid) At(lat1, lon1, distance, bearing float64) (lat2, lon2
     return
 }
 
+/*
+
+Displacement
+
+Returns the (x,y) displacement in distance units between the two specified 
+locations.
+
+    x, y  = geo.Displacement( lat1, lon1, lat2, lon2 )
+    
+NOTE: The x and y displacements are only approximations and only valid
+between two locations that are fairly near to each other. Beyond 10 kilometers
+or more, the concept of X and Y on a curved surface loses its meaning.
+
+*/
+
+func (ellipsoid Ellipsoid) Displacement(lat1, lon1, lat2, lon2 float64) (x, y float64) {
+    // FIXME: Normalize!!! before use.
+    r, bearing := ellipsoid.To(lat1, lon1, lat2, lon2)
+    
+    if ellipsoid.Units == Degrees {
+        bearing = deg2rad(bearing)
+    }
+    
+    x = r * math.Sin(bearing)
+    y = r * math.Cos(bearing)
+    return x, y
+}
+
+
 func (ellipsoid Ellipsoid) calculateTargetlocation(lat1, lon1, distance, bearing float64) (lat2, lon2 float64) {
 
     if debug == true {
@@ -287,7 +316,7 @@ func (ellipsoid Ellipsoid) calculateTargetlocation(lat1, lon1, distance, bearing
     eps := 0.5e-13
 
     a := ellipsoid.Ellipse.Equatorial
-    f := 1 / ellipsoid.Ellipse.Inv_flattening
+    f := 1.0 / ellipsoid.Ellipse.Inv_flattening
     r := 1.0 - f
 
     clat1 := math.Cos(lat1)
