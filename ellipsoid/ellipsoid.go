@@ -1,8 +1,10 @@
 package ellipsoid
 
+// Written in Go by Stefan Schroeder, New York, 2013
 // Version 1.0 based on Geo::Ellipsoid Version 1.12.
 // Version 1.1 Added ECEF functions.
 // Version 1.2 Replaced Fabs with Abs. 
+// Version 1.3 Added Displacement function
 
 /*
 
