@@ -27,7 +27,7 @@ func main() {
 	fmt.Printf("Distance = %v Bearing = %v\n", distance, bearing)
 	// Calculate where you are when going from SFO in 
 	// direction 45.0 deg. for 2000 meters.
-	lon3, lat3 := geo1.At(lat1, lon1, 2000.0, 45.0)
+	lat3, lon3 := geo1.At(lat1, lon1, 2000.0, 45.0)
 	fmt.Printf("lat3 = %v lon3 = %v\n", lat3, lon3)
 }
 
@@ -306,6 +306,28 @@ func (ellipsoid Ellipsoid) Displacement(lat1, lon1, lat2, lon2 float64) (x, y fl
     x = r * math.Sin(bearing)
     y = r * math.Cos(bearing)
     return x, y
+}
+
+/* Location
+
+Returns the list (latitude,longitude) of a location at a given (x,y)
+displacement from a given location.
+
+	lat2, lon2 = geo.Location( lat1, lon1, x, y )
+
+*/
+
+func (ellipsoid Ellipsoid) Location(lat1, lon1, x, y float64) (lat, lon float64) {
+	degrees_per_radian := 180.0/math.Pi
+
+	range1 := math.Sqrt( x*x + y*y )
+	bearing1 := math.Atan2( x, y )
+
+	if ellipsoid.Units == Degrees {
+		bearing1 *= degrees_per_radian 
+	}
+
+	return ellipsoid.At( lat1, lon1, range1, bearing1 )
 }
 
 
