@@ -100,6 +100,13 @@ type ellipse struct {
     Inv_flattening float64
 }
 
+// Shortcut for a location
+type Location struct {
+	Lat float64
+	Lon float64
+	Ele float64
+}
+
 func deg2rad(d float64) (r float64) {
     return d * pi / 180.0
 }
@@ -314,6 +321,8 @@ Returns the list (latitude,longitude) of a location at a given (x,y)
 displacement from a given location.
 
 	lat2, lon2 = geo.Location( lat1, lon1, x, y )
+
+The note from Displacement applies.
 
 */
 
@@ -558,6 +567,15 @@ func (ellipsoid Ellipsoid) calculateBearing(lat1, lon1, lat2, lon2 float64) (dis
     return
 }
 
+/* ToLLA 
+
+The ToLLA function takes three cartesian coordinates x, y, z and returns 
+the latitude, longitude, elevation list. 
+
+FIXME: This algorithm cannot handle x==0, although this is a valid value.
+WARNING: I put in an if condition to catch this. Is it still necessary?
+
+*/
 func (ellipsoid Ellipsoid) ToLLA(x, y, z float64) (lat1, lon1, alt1 float64) {
 
     if x == 0 {
