@@ -13,7 +13,7 @@ tested against other methods.
 
 ## Overview
 
-* Calculating distance and bearing when two locations with longitude and latitude are are given (*To*).
+* Calculating distance and bearing when two locations with longitude and latitude are are given (_To_).
 * Calculate target location when one location with longitude and latitude and distance and bearing are given (*At*).
 * Supports several ellipsoids (incl. WGS84) out of the box.
 * Convert cartesian ECEF-coordinates to longitude, latitude, altitude (*ToLLA*) and vice versa (*ToECEF*).
@@ -145,7 +145,7 @@ Obviously the compass direction is not too meaningful near the poles.
 Returns the list latitude,longitude in degrees or radians that is a
 specified range and bearing from a given location.
 
-    lat2, lon2  = geo.At( lat1, lon1, range, bearing )
+	lat2, lon2  = geo.At( lat1, lon1, range, bearing )
 
 ### Intermediate
 
@@ -168,7 +168,7 @@ with 4*2 + 2 = 5*2 cells.
 
 Steps shall not be 0.
 
-I havent tested the upper limit for steps.
+I have not tested the upper limit for steps.
 
 ### ToECEF
 
@@ -178,10 +178,18 @@ The ToECEF-Function does interesting stuff.
 
 The ToLLA-Function does interesting stuff.
 
+### Displacement
+
+The Displacement-Function does interesting stuff.
+
+### Location
+
+The Location-Function does interesting stuff.
+
 ### Notes
 
-If you need background information read the code or go to Geo::Ellipsoid, that is the Perl module
-on CPAN that this package is a port of.
+If you need background information read the code or go to Geo::Ellipsoid or Geo::ECEF, these are the Perl modules
+on CPAN that this package is a port of. 
 
 ## About and Acknowledgments
 
