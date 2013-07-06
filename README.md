@@ -13,7 +13,7 @@ tested against other methods.
 
 ## Overview
 
-* Calculating distance and bearing when two locations with longitude and latitude are are given (_To_).
+* Calculating distance and bearing when two locations with longitude and latitude are are given (To).
 * Calculate target location when one location with longitude and latitude and distance and bearing are given (*At*).
 * Supports several ellipsoids (incl. WGS84) out of the box.
 * Convert cartesian ECEF-coordinates to longitude, latitude, altitude (*ToLLA*) and vice versa (*ToECEF*).
