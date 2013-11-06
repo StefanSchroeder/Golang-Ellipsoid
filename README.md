@@ -23,6 +23,10 @@ tested against other methods.
 
 Make sure you have the a working Go environment. See the [install instructions](http://golang.org/doc/install.html). 
 
+Install package with
+
+go get github.com/StefanSchroeder/Golang-Ellipsoid
+
 ## Example
     
 	package main
