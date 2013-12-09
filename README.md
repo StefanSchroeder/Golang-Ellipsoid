@@ -176,11 +176,21 @@ I have not tested the upper limit for steps.
 
 ### ToECEF
 
-The ToECEF-Function does interesting stuff.
+The ToECEF-Function computes the ECEF tripel for a set of 
+latitude, longitude and altitude for the given ellipsoid object.
+
+	x, y, z := geo.ToECEF(lat, lon, alt)
+
+The inverse function is ToLLA.
 
 ### ToLLA
 
-The ToLLA-Function does interesting stuff.
+The ToLLA-Function computes latitude, langitude and elevation for an ECEF
+tripel.
+
+	lat, lon, alt := geo.ToLLA(x, y, z)
+
+The inverse function is ToECEF.
 
 ### Displacement
 
