@@ -1,3 +1,5 @@
+[![GoDoc](https://godoc.org/github.com/StefanSchroeder/Golang-Ellipsoid/ellipsoid?status.png)](https://godoc.org/github.com/StefanSchroeder/Golang-Ellipsoid/ellipsoid)
+
 # ellipsoid.go
 
 ellipsoid.go performs latitude and longitude calculations 
