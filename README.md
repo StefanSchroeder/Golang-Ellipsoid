@@ -196,11 +196,25 @@ The inverse function is ToECEF.
 
 ### Displacement
 
-The Displacement-Function does interesting stuff.
+Returns the (x,y) displacement in distance units between the two specified 
+locations.
+
+    x, y  = geo.Displacement( lat1, lon1, lat2, lon2 )
+    
+NOTE: The x and y displacements are only approximations and only valid
+between two locations that are fairly near to each other. Beyond 10 kilometers
+or more, the concept of X and Y on a curved surface loses its meaning.
+
 
 ### Location
 
-The Location-Function does interesting stuff.
+Returns the list (latitude,longitude) of a location at a given (x,y)
+displacement from a given location.
+
+	lat2, lon2 = geo.Location( lat1, lon1, x, y )
+
+The note from Displacement applies.
+
 
 ### Notes
 
