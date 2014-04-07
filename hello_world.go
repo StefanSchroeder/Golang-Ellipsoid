@@ -1,7 +1,7 @@
 package main
 
 import "fmt"
-import "Golang-Ellipsoid/ellipsoid"
+import "github.com/StefanSchroeder/Golang-Ellipsoid/ellipsoid"
 
 func main() {
     lat1, lon1 := 37.619002, -122.374843 //SFO
