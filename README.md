@@ -16,10 +16,10 @@ tested against other methods.
 ## Overview
 
 * Calculating distance and bearing when two locations with longitude and latitude are are given (To).
-* Calculate target location when one location with longitude and latitude and distance and bearing are given (*At*).
+* Calculate target location when one location with longitude and latitude and distance and bearing are given (At).
 * Supports several ellipsoids (incl. WGS84) out of the box.
-* Convert cartesian ECEF-coordinates to longitude, latitude, altitude (*ToLLA*) and vice versa (*ToECEF*).
-* Supports computation of lat-lon conversion to cartesian x,y (*Displacement* and *Location*). Handle with care.
+* Convert cartesian ECEF-coordinates to longitude, latitude, altitude (*ToLLA*) and vice versa (ToECEF).
+* Supports computation of lat-lon conversion to cartesian x,y (Displacement and Location). Handle with care.
 
 ## Installation
 
@@ -34,7 +34,7 @@ go get github.com/StefanSchroeder/Golang-Ellipsoid
 	package main
 
 	import "fmt"
-	import "ellipsoid"
+	import "github.com/StefanSchroeder/Golang-Ellipsoid/ellipsoid"
 
 	func main() {
 		lat1, lon1 := 37.619002, -122.374843 //SFO
@@ -161,7 +161,6 @@ points on a straight line (whatever that is on an ellipsoid), INCLUDING the
 start and the endpoint.
 
 So if you put in point1 and point2 with step count 4, the output will be
-(you make 4 hops, right?)
 
 	point1
 	i1
@@ -170,7 +169,7 @@ So if you put in point1 and point2 with step count 4, the output will be
 	point2
 
 Each point is two float64 values, lat and lon, thus you have an array
-with 4*2 + 2 = 5*2 cells.
+with 4x2 + 2 = 5x2 cells.
 
 Steps shall not be 0.
 
