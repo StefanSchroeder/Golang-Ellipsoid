@@ -42,7 +42,7 @@ go get github.com/StefanSchroeder/Golang-Ellipsoid
 
 		// Create Ellipsoid object with WGS84-ellipsoid, 
 		// angle units are degrees, distance units are meter.
-		geo1 := ellipsoid.Init("WGS84", ellipsoid.Degrees, ellipsoid.Meter, ellipsoid.Longitude_is_symmetric, ellipsoid.Bearing_is_symmetric)
+		geo1 := ellipsoid.Init("WGS84", ellipsoid.Degrees, ellipsoid.Meter, ellipsoid.LongitudeIsSymmetric, ellipsoid.BearingIsSymmetric)
 
 		// Calculate the distance and bearing from SFO to LAX.
 		distance, bearing := geo1.To(lat1, lon1, lat2, lon2)
@@ -124,7 +124,7 @@ This parameter applies to input- and output-parameters.
 	
 The third argument is either
 
-	Longitude_is_symmetric or Longitude_not_symmetric
+	LongitudeIsSymmetric or LongitudeNotSymmetric
 
 That's internally a boolean, true or false. If the longitude is symmetric the
 longitude in the result of the At-function will we be in the range [-180..180],
@@ -132,7 +132,7 @@ else (not-symmetric) the range will be [0..360].
 
 The fourth argument is either
 
-	Bearing_is_symmetric or Bearing_not_symmetric
+	BearingIsSymmetric or BearingNotSymmetric
 
 That's also internally a boolean, true or false.
 
