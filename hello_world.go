@@ -9,7 +9,7 @@ func main() {
 
 	// Create Ellipsoid object with WGS84-ellipsoid,
 	// angle units are degrees, distance units are meter.
-	geo1 := ellipsoid.Init("WGS84", ellipsoid.Degrees, ellipsoid.Meter, ellipsoid.Longitude_is_symmetric, ellipsoid.Bearing_is_symmetric)
+	geo1 := ellipsoid.Init("WGS84", ellipsoid.Degrees, ellipsoid.Meter, ellipsoid.LongitudeIsSymmetric, ellipsoid.BearingIsSymmetric)
 
 	// Calculate the distance and bearing from SFO to LAX.
 	distance, bearing := geo1.To(lat1, lon1, lat2, lon2)
