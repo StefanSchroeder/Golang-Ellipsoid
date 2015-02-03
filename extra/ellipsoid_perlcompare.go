@@ -4,7 +4,6 @@ package main
 // with those of the Perl module Geo::Ellipsoid.
 // It is obsolete and superseded by the builtin tests and only 
 // here for reference.
-
 import "github.com/StefanSchroeder/Golang-Ellipsoid/ellipsoid"
 import "fmt"
 
