@@ -1,6 +1,8 @@
 [![GoDoc](https://godoc.org/github.com/StefanSchroeder/Golang-Ellipsoid/ellipsoid?status.png)](https://godoc.org/github.com/StefanSchroeder/Golang-Ellipsoid/ellipsoid)
 
-## There was a formal API change. I renamed constants to use Camelcase instead of underscores. You can rename these in your client code without change of behavior.
+
+[![Build Status](https://travis-ci.org/StefanSchroeder/Golang-Ellipsoid.svg?branch=master)](https://travis-ci.org/StefanSchroeder/Golang-Ellipsoid)
+
 
 # ellipsoid.go
 
