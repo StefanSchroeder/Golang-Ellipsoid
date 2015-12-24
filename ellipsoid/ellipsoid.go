@@ -10,7 +10,7 @@ package ellipsoid
 
 SYNOPSIS
 
-See hello-wgs84.go example.
+See hello-world.go example.
 
 DESCRIPTION
 
@@ -67,11 +67,11 @@ const (
 	Radians = iota
 	// LongitudeIsSymmetric determines that the output longitude shall be symmetric.
 	LongitudeIsSymmetric = true
-	// LongitudeIsSymmetric determines that the output longitude shall not be symmetric.
+	// LongitudeNotSymmetric determines that the output longitude shall not be symmetric.
 	LongitudeNotSymmetric = false
 	// BearingIsSymmetric determines that the output bearing shall be symmetric.
 	BearingIsSymmetric = true
-	// BearingIsSymmetric determines that the output bearing shall not be symmetric.
+	// BearingNotSymmetric determines that the output bearing shall not be symmetric.
 	BearingNotSymmetric = false
 )
 
@@ -79,17 +79,17 @@ const (
 type Ellipsoid struct {
 	Ellipse            ellipse
 	Units              int
-	Distance_units     int
+	DistanceUnits     int
 	LongitudeSymmetric bool
-	Bearing_symmetry   bool
-	Distance_factor    float64
-	// Having the Distance_factor AND the Distance_units in this struct is redundant
+	BearingSymmetry   bool
+	DistanceFactor    float64
+	// Having the DistanceFactor AND the DistanceUnits in this struct is redundant
 	// but it looks nicer in the code.
 }
 
 type ellipse struct {
 	Equatorial     float64
-	Inv_flattening float64
+	InvFlattening float64
 }
 
 // Shortcut for a location
@@ -131,7 +131,7 @@ Example:
 	)
 
 */
-func Init(name string, units int, dist_units int, long_sym bool, bear_sym bool) (e Ellipsoid) {
+func Init(name string, units int, distUnits int, longSym bool, bearSym bool) (e Ellipsoid) {
 	m := map[string]ellipse{
 		"AIRY":                  {6377563.396, 299.3249646},
 		"AIRY-MODIFIED":         {6377340.189, 299.3249646},
@@ -173,7 +173,7 @@ func Init(name string, units int, dist_units int, long_sym bool, bear_sym bool) 
 
 	//                      m    ft      km      mi        nm
 	conversion := []float64{1.0, 0.3048, 1000.0, 1609.344, 1852.0}
-	ellipsoid := Ellipsoid{e2, units, dist_units, long_sym, bear_sym, conversion[dist_units]}
+	ellipsoid := Ellipsoid{e2, units, distUnits, longSym, bearSym, conversion[distUnits]}
 	return ellipsoid
 }
 
@@ -206,7 +206,7 @@ func (ellipsoid Ellipsoid) Intermediate(lat1, lon1, lat2, lon2 float64, steps in
 		return
 	}
 	r, phi := ellipsoid.To(lat1, lon1, lat2, lon2)
-	var v []float64 = make([]float64, steps*2+2)
+	v := make([]float64, steps*2+2)
 	for i := 0; i <= steps; i++ {
 		a, b := ellipsoid.At(lat1, lon1, r*float64(i)/float64(steps), phi)
 		v[i*2], v[i*2+1] = a, b
@@ -235,7 +235,7 @@ func (ellipsoid Ellipsoid) To(lat1, lon1, lat2, lon2 float64) (distance, bearing
 		bearing = rad2deg(bearing)
 	}
 
-	distance /= ellipsoid.Distance_factor
+	distance /= ellipsoid.DistanceFactor
 
 	return
 }
@@ -307,13 +307,13 @@ The note from Displacement applies.
 
 */
 func (ellipsoid Ellipsoid) Location(lat1, lon1, x, y float64) (lat, lon float64) {
-	degrees_per_radian := 180.0 / math.Pi
+	degreesPerRadian := 180.0 / math.Pi
 
 	range1 := math.Sqrt(x*x + y*y)
 	bearing1 := math.Atan2(x, y)
 
 	if ellipsoid.Units == Degrees {
-		bearing1 *= degrees_per_radian
+		bearing1 *= degreesPerRadian
 	}
 
 	return ellipsoid.At(lat1, lon1, range1, bearing1)
@@ -328,7 +328,7 @@ func (ellipsoid Ellipsoid) calculateTargetlocation(lat1, lon1, distance, bearing
 	eps := 0.5e-13
 
 	a := ellipsoid.Ellipse.Equatorial
-	f := 1.0 / ellipsoid.Ellipse.Inv_flattening
+	f := 1.0 / ellipsoid.Ellipse.InvFlattening
 	r := 1.0 - f
 
 	clat1 := math.Cos(lat1)
@@ -339,7 +339,7 @@ func (ellipsoid Ellipsoid) calculateTargetlocation(lat1, lon1, distance, bearing
 	tu := r * math.Sin(lat1) / clat1
 	faz := bearing
 
-	s := ellipsoid.Distance_factor * distance
+	s := ellipsoid.DistanceFactor * distance
 
 	sf := math.Sin(faz)
 	cf := math.Cos(faz)
@@ -401,7 +401,7 @@ func (ellipsoid Ellipsoid) calculateTargetlocation(lat1, lon1, distance, bearing
 
 func (ellipsoid Ellipsoid) calculateBearing(lat1, lon1, lat2, lon2 float64) (distance, bearing float64) {
 	a := ellipsoid.Ellipse.Equatorial
-	f := 1 / ellipsoid.Ellipse.Inv_flattening
+	f := 1 / ellipsoid.Ellipse.InvFlattening
 
 	if lon1 < 0 {
 		lon1 += twopi
@@ -522,7 +522,7 @@ func (ellipsoid Ellipsoid) calculateBearing(lat1, lon1, lat2, lon2 float64) (dis
 	}
 
 	// adjust azimuth to (0,360) or (-180,180) as specified
-	if ellipsoid.Bearing_symmetry == BearingIsSymmetric {
+	if ellipsoid.BearingSymmetry == BearingIsSymmetric {
 		if faz < -(pi) {
 			faz += twopi
 		}
@@ -557,7 +557,7 @@ func (ellipsoid Ellipsoid) ToLLA(x, y, z float64) (lat1, lon1, alt1 float64) {
 	}
 
 	a := ellipsoid.Ellipse.Equatorial
-	f := 1 / ellipsoid.Ellipse.Inv_flattening
+	f := 1 / ellipsoid.Ellipse.InvFlattening
 
 	b := a * (1.0 - f)
 	e := math.Sqrt((a*a - b*b) / (a * a))
@@ -600,7 +600,7 @@ func (ellipsoid Ellipsoid) ToLLA(x, y, z float64) (lat1, lon1, alt1 float64) {
    returns three cartesian coordinates x, y, z */
 func (ellipsoid Ellipsoid) ToECEF(lat1, lon1, alt1 float64) (x, y, z float64) {
 	a := ellipsoid.Ellipse.Equatorial
-	f := 1 / ellipsoid.Ellipse.Inv_flattening
+	f := 1 / ellipsoid.Ellipse.InvFlattening
 
 	b := a * (1.0 - f)
 	e := math.Sqrt((a*a - b*b) / (a * a))
