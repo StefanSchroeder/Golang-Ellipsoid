@@ -79,16 +79,16 @@ const (
 type Ellipsoid struct {
 	Ellipse            ellipse
 	Units              int
-	DistanceUnits     int
+	DistanceUnits      int
 	LongitudeSymmetric bool
-	BearingSymmetry   bool
-	DistanceFactor    float64
+	BearingSymmetry    bool
+	DistanceFactor     float64
 	// Having the DistanceFactor AND the DistanceUnits in this struct is redundant
 	// but it looks nicer in the code.
 }
 
 type ellipse struct {
-	Equatorial     float64
+	Equatorial    float64
 	InvFlattening float64
 }
 
