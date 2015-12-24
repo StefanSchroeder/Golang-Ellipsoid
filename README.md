@@ -1,7 +1,8 @@
 [![GoDoc](https://godoc.org/github.com/StefanSchroeder/Golang-Ellipsoid/ellipsoid?status.png)](https://godoc.org/github.com/StefanSchroeder/Golang-Ellipsoid/ellipsoid)
 
-
 [![Build Status](https://travis-ci.org/StefanSchroeder/Golang-Ellipsoid.svg?branch=master)](https://travis-ci.org/StefanSchroeder/Golang-Ellipsoid)
+
+[![Go Report Card](http://goreportcard.com/badge/StefanSchroeder/Golang-Ellipsoid)](http://goreportcard.com/report/StefanSchroeder/Golang-Ellipsoid) 
 
 
 # ellipsoid.go
