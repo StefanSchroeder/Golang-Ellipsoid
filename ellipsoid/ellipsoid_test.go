@@ -10,7 +10,7 @@ import (
 import "math"
 import "fmt"
 
-func delta_within(test *testing.T, loc string, v float64, t float64, d float64) {
+func deltaWithin(test *testing.T, loc string, v float64, t float64, d float64) {
 	diff := math.Abs(v - t)
 	if diff < d {
 		// fmt.Printf("Test OK\n")
@@ -24,7 +24,7 @@ func loc() (loc string) {
 	return "L" + strconv.Itoa(l)
 }
 
-type testobject_at struct {
+type testobjectAt struct {
 	loc  string
 	lat1 float64
 	lon1 float64
@@ -38,7 +38,7 @@ func TestAt(t *testing.T) {
 
 	e1 := Init("WGS84", Degrees, Meter, LongitudeNotSymmetric, BearingNotSymmetric)
 
-	all_tests_e1 := []testobject_at{
+	allTestsE1 := []testobjectAt{
 		{loc(), -38.369163, 190.874558, 663.027183, 53.574472, -38.3656166574817, 190.880662670944},
 		{loc(), -1.549886, 336.466532, 3150.908018, 129.475800, -1.56800166865689, 336.48838856866},
 		{loc(), -11.235004, 282.756437, 1175.174596, 192.154112, -11.2453901777647, 282.754171348951},
@@ -140,15 +140,15 @@ func TestAt(t *testing.T) {
 		{loc(), 77.751666, 6.954744, 8617.247199, 43.480525, 77.8075587887118, 7.20615011733763},
 		{loc(), 77.940951, 38.523563, 1493.070064, 336.795873, 77.9532419255974, 38.4983240629321}}
 
-	for _, v := range all_tests_e1 {
+	for _, v := range allTestsE1 {
 		lat3, lon3 := e1.At(v.lat1, v.lon1, v.d, v.b)
-		delta_within(t, v.loc, lat3, v.lat2, 1e-1)
-		delta_within(t, v.loc, lon3, v.lon2, 1e-1)
+		deltaWithin(t, v.loc, lat3, v.lat2, 1e-1)
+		deltaWithin(t, v.loc, lon3, v.lon2, 1e-1)
 	}
 
 	e2 := Init("WGS84", Degrees, Meter, LongitudeIsSymmetric, BearingNotSymmetric)
 
-	all_tests_e2 := []testobject_at{
+	allTestsE2 := []testobjectAt{
 		{loc(), -0.582762, 29.118576, 2946.165884, 106.326170, -0.590251306822743, 29.1439759994689},
 		{loc(), -1.549886, 336.466532, 3150.908018, 129.475800, -1.56800166865689, -23.5116114313395},
 		{loc(), -11.235004, 282.756437, 1175.174596, 192.154112, -11.2453901777647, -77.2458286510488},
@@ -250,15 +250,15 @@ func TestAt(t *testing.T) {
 		{loc(), 77.751666, 6.954744, 8617.247199, 43.480525, 77.8075587887118, 7.20615011733763},
 		{loc(), 77.940951, 38.523563, 1493.070064, 336.795873, 77.9532419255974, 38.4983240629321}}
 
-	for _, v := range all_tests_e2 {
+	for _, v := range allTestsE2 {
 		lat3, lon3 := e2.At(v.lat1, v.lon1, v.d, v.b)
-		delta_within(t, v.loc, lat3, v.lat2, 1e-1)
-		delta_within(t, v.loc, lon3, v.lon2, 1e-1)
+		deltaWithin(t, v.loc, lat3, v.lat2, 1e-1)
+		deltaWithin(t, v.loc, lon3, v.lon2, 1e-1)
 	}
 
 }
 
-type testobject_to struct {
+type testobjectTo struct {
 	loc  string
 	lat1 float64
 	lon1 float64
@@ -272,7 +272,7 @@ type testobject_to struct {
 func TestTo(t *testing.T) {
 	e := Init("WGS84", Degrees, Meter, LongitudeIsSymmetric, BearingNotSymmetric)
 
-	all_tests := []testobject_to{
+	allTests := []testobjectTo{
 		{loc(), -88.000000, 1.000000, -88.000000, 1.000000, 0, 0.0, 0.1},
 		{loc(), -88.000000, 1.000000, -88.000000, 1.000000, 0, 0, 0.1},
 		{loc(), -88.000000, 1.000000, -88.000000, 90.000000, 313115.736403696, 134.482545961512, 0.0001},
@@ -519,14 +519,14 @@ func TestTo(t *testing.T) {
 		{loc(), 70.557651, 168.120919, -4.512946, 146.711647, 8481627.39707062, 202.024485782197, 0.0001},
 		{loc(), 45.494490, 42.178744, -62.327500, 251.688039, 17356605.1087735, 214.442967212505, 0.0001}}
 
-	for _, v := range all_tests {
+	for _, v := range allTests {
 		dist, bear := e.To(v.lat1, v.lon1, v.lat2, v.lon2)
-		delta_within(t, v.loc, dist, v.d, 1e-1)
-		delta_within(t, v.loc, bear, v.b, v.tol)
+		deltaWithin(t, v.loc, dist, v.d, 1e-1)
+		deltaWithin(t, v.loc, bear, v.b, v.tol)
 	}
 }
 
-type testobject_airport struct {
+type testobjectAirport struct {
 	loc   string
 	t     string
 	lat1  float64
@@ -538,11 +538,11 @@ type testobject_airport struct {
 
 func testAirport(t *testing.T) {
 	epsilon := 50.0
-	all_tests := []testobject_airport{
+	allTests := []testobjectAirport{
 		{loc(), "Istanbul to Delhi", 41.1, 29, 28.67, 77.21, 4550},
-		{loc(), "Tokyo to New_York", 35.67, 139.77, 40.67, -73.94, 10846},
+		{loc(), "Tokyo to Newyork", 35.67, 139.77, 40.67, -73.94, 10846},
 		{loc(), "Lima to Cairo", -12.07, -77.05, 30.06, 31.25, 12423},
-		{loc(), "Lahore to Rio_de_Janeiro", 31.56, 74.35, -22.91, -43.2, 13845},
+		{loc(), "Lahore to RiodeJaneiro", 31.56, 74.35, -22.91, -43.2, 13845},
 		{loc(), "Santiago to Kaifeng", 19.48, -70.69, 34.85, 114.35, 19529},
 		{loc(), "Calcutta to Toronto", 22.57, 88.36, 43.65, -79.38, 12540},
 		{loc(), "Rangoon to Sydney", 16.79, 96.15, -33.87, 151.21, 8104},
@@ -566,11 +566,11 @@ func testAirport(t *testing.T) {
 		{loc(), "Faisalabad to Izmir", 31.41, 73.11, 38.43, 27.15, 4215}}
 
 	e := Init("WGS84", Degrees, Kilometer, LongitudeIsSymmetric, BearingIsSymmetric)
-	for i, v := range all_tests {
+	for i, v := range allTests {
 		fmt.Printf("Going from %v\n", v.t)
 		r, _ := e.To(v.lat1, v.lon1, v.lat2, v.lon2)
 		fmt.Printf("Going from %v %v \n", v.delta, r)
-		delta_within(t, v.loc, r, v.delta, epsilon)
+		deltaWithin(t, v.loc, r, v.delta, epsilon)
 		fmt.Printf("END %v \n", i)
 	}
 }
@@ -579,20 +579,20 @@ func TestToLLA(t *testing.T) {
 
 	e1 := Init("WGS84", Degrees, Meter, LongitudeIsSymmetric, BearingNotSymmetric)
 	//  http://sysense.net/products/ecef_lla_converter/index.html
-	all_tests := []testobject_ToECEF{
+	allTests := []testobjecttoECEF{
 		{loc(), 30.2746722, -97.7403306, 0.0, -742507.1, -5462738.5, 3196706.5},
 		{loc(), 38.649882, -77.134602, -3261.28, 1110000., -4860000., 3960000.},
 		{loc(), 37.89038, 126.73316, 23.0, -3014326.6, 4039148.7, 3895863.}}
 
-	for _, v := range all_tests {
+	for _, v := range allTests {
 		lat, lon, h := e1.ToLLA(v.x, v.y, v.z)
-		delta_within(t, v.loc, lat, v.lat, 1.0)
-		delta_within(t, v.loc, lon, v.lon, 1.0)
-		delta_within(t, v.loc, h, v.h, 1.0)
+		deltaWithin(t, v.loc, lat, v.lat, 1.0)
+		deltaWithin(t, v.loc, lon, v.lon, 1.0)
+		deltaWithin(t, v.loc, h, v.h, 1.0)
 	}
 }
 
-type testobject_ToECEF struct {
+type testobjecttoECEF struct {
 	loc string
 	lat float64
 	lon float64
@@ -606,7 +606,7 @@ func TestToECEF(t *testing.T) {
 
 	e1 := Init("WGS84", Degrees, Meter, LongitudeIsSymmetric, BearingNotSymmetric)
 
-	all_tests := []testobject_ToECEF{
+	allTests := []testobjecttoECEF{
 		{loc(), 30.2746722, -97.7403306, 0.0, -742507.1, -5462738.5, 3196706.5},
 		{loc(), 38.649882, -77.134602, -3261.28, 1110000, -4860000.0, 3960000.0},
 		{loc(), 37.89038, 126.73316, 23., -3014326.6, 4039148.7, 3895863.0},
@@ -615,16 +615,16 @@ func TestToECEF(t *testing.T) {
 		{loc(), -90.0, 0.0, 0.0, 0.0, 0.0, -6356752.0},
 		{loc(), 0.0, 90.0, 0.0, 0.0, 6378137.0, 0.0}}
 
-	for _, v := range all_tests {
+	for _, v := range allTests {
 		x, y, z := e1.ToECEF(v.lat, v.lon, v.h)
-		delta_within(t, v.loc, x, v.x, 10.0)
-		delta_within(t, v.loc, y, v.y, 10.0)
-		delta_within(t, v.loc, z, v.z, 10.0)
+		deltaWithin(t, v.loc, x, v.x, 10.0)
+		deltaWithin(t, v.loc, y, v.y, 10.0)
+		deltaWithin(t, v.loc, z, v.z, 10.0)
 	}
 
 }
 
-type testobject_Displace struct {
+type testobjectdisplace struct {
 	loc  string
 	lat1 float64
 	lon1 float64
@@ -639,7 +639,7 @@ func TestDisplacement(t *testing.T) {
 	epsilon := 0.00001
 
 	// These tests are taken from the test suite of Geo::Ellipsoid.
-	all_tests := []testobject_Displace{
+	allTests := []testobjectdisplace{
 		{loc(), 41.978744444444, 272.096858333333, 42.005419444444, 272.073286111111, -1952.8108885261, 2963.14446772882},
 		{loc(), 41.978744444444, 272.096858333333, 42.005419444444, 272.073286111111, -1952.8108885261, 2963.14446772882},
 		{loc(), 42.005419444444, 272.073286111111, 42.005508333333, 272.100791666667, 2278.65964147511, 10.239209526501},
@@ -675,9 +675,9 @@ func TestDisplacement(t *testing.T) {
 		{loc(), 0.000000000000, 270.000000000000, 1.000000000000, 270.000000000000, 0, 110574.388557909},
 	}
 
-	for _, v := range all_tests {
+	for _, v := range allTests {
 		x, y := e1.Displacement(v.lat1, v.lon1, v.lat2, v.lon2)
-		delta_within(t, v.loc, x, v.x, epsilon)
-		delta_within(t, v.loc, y, v.y, epsilon)
+		deltaWithin(t, v.loc, x, v.x, epsilon)
+		deltaWithin(t, v.loc, y, v.y, epsilon)
 	}
 }

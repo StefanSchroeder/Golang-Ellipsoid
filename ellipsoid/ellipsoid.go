@@ -92,7 +92,7 @@ type ellipse struct {
 	InvFlattening float64
 }
 
-// Shortcut for a location
+// Location is one coordinate in LLA.
 type Location struct {
 	Lat float64
 	Lon float64

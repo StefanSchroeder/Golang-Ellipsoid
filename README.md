@@ -33,7 +33,7 @@ Make sure you have the a working Go environment. See the [install instructions](
 
 Install package with
 
-go get github.com/StefanSchroeder/Golang-Ellipsoid
+	go get github.com/StefanSchroeder/Golang-Ellipsoid
 
 ## Example
     
@@ -177,7 +177,7 @@ So if you put in point1 and point2 with step count 4, the output will be
 Each point is two float64 values, lat and lon, thus you have an array
 with 4x2 + 2 = 5x2 cells.
 
-Steps shall not be 0.
+Steps cannot be 0.
 
 I have not tested the upper limit for steps.
 
