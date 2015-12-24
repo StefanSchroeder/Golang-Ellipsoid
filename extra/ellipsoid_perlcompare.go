@@ -2,7 +2,7 @@ package main
 
 // This short script is used for comparison of the golang-package results
 // with those of the Perl module Geo::Ellipsoid.
-// It is obsolete and superseded by the builtin tests and only 
+// It is obsolete and superseded by the builtin tests and only
 // here for reference.
 import "github.com/StefanSchroeder/Golang-Ellipsoid/ellipsoid"
 import "fmt"
