@@ -1,7 +1,5 @@
 [![GoDoc](https://godoc.org/github.com/StefanSchroeder/Golang-Ellipsoid/ellipsoid?status.png)](https://godoc.org/github.com/StefanSchroeder/Golang-Ellipsoid/ellipsoid)
-
 [![Build Status](https://travis-ci.org/StefanSchroeder/Golang-Ellipsoid.svg?branch=master)](https://travis-ci.org/StefanSchroeder/Golang-Ellipsoid)
-
 [![Go Report Card](http://goreportcard.com/badge/StefanSchroeder/Golang-Ellipsoid)](http://goreportcard.com/report/StefanSchroeder/Golang-Ellipsoid) 
 
 
@@ -22,7 +20,7 @@ It has been successfully tested with Go 1.3, 1.4, 1.5.
 
 ## Overview
 
-* Calculating distance and bearing when two locations with longitude and latitude are are given (To).
+* Calculating distance and bearing when two locations with longitude and latitude are given (To).
 * Calculate target location when one location with longitude and latitude and distance and bearing are given (At).
 * Supports several ellipsoids (incl. WGS84) out of the box.
 * Convert cartesian ECEF-coordinates to longitude, latitude, altitude (*ToLLA*) and vice versa (ToECEF).
@@ -145,7 +143,7 @@ That's also internally a boolean, true or false.
 
 ### To
 
-The To-Function computes the distance in the units provided to Init as a Float64 and the bearing in degrees [0...360[
+The To-Function computes the distance in the units provided to Init as a Float64 and the bearing in degrees [0...360]
 or Radian. Input parameters are the latitude and longitude of the starting point and
 latitude and longitude of the destination. All parameters are Float64. The bearing is 
 the direction when standing on the starting point and looking towards the destination point.
