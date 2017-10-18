@@ -23,7 +23,7 @@ It has been successfully tested with Go 1.3, 1.4, 1.5, 1.6.
 * Calculating distance and bearing when two locations with longitude and latitude are given (To).
 * Calculate target location when one location with longitude and latitude and distance and bearing are given (At).
 * Supports several ellipsoids (incl. WGS84) out of the box.
-* Convert cartesian ECEF-coordinates to longitude, latitude, altitude (*ToLLA*) and vice versa (ToECEF).
+* Convert cartesian [ECEF-coordinates](https://en.wikipedia.org/wiki/ECEF) to longitude, latitude, altitude (*ToLLA*) and vice versa (ToECEF).
 * Supports computation of lat-lon conversion to cartesian x,y (Displacement and Location). Handle with care.
 
 ## Installation
