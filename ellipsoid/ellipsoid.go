@@ -22,7 +22,7 @@ calculate distance and bearing between two widely-separated locations
 on the earth's surface.
 
 The shape of an ellipsoid is defined by the lengths of its
-semi-major and semi-minor axes. The shape may also be specifed by
+semi-major and semi-minor axes. The shape may also be specified by
 the flattening ratio f as:
 
     f = ( semi-major - semi-minor ) / semi-major
@@ -500,7 +500,6 @@ func (ellipsoid Ellipsoid) calculateBearing(lat1, lon1, lat2, lon2 float64) (dis
 	}
 
 	faz = math.Atan2(tu1, tu2)
-	baz = math.Atan2(cu1*sx, (baz*cx-su1*cu2)) + pi
 	x = math.Sqrt(((1.0/(r*r))-1.0)*c2a+1.0) + 1.0
 	x = (x - 2.0) / x
 	c = 1.0 - x
