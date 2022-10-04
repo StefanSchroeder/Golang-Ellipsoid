@@ -16,7 +16,7 @@ can he even vouch for the results of the calculations,
 although they do seem to work for him and have been 
 tested against other methods.
 
-It has been successfully tested with Go 1.3, 1.4, 1.5, 1.6, 1.14.
+It has been successfully tested with Go 1.3, 1.4, 1.5, 1.6, 1.14, 1.18.
 
 ## Overview
 
