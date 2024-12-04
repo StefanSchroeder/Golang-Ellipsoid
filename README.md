@@ -2,6 +2,7 @@
 [![Build Status](https://travis-ci.org/StefanSchroeder/Golang-Ellipsoid.svg?branch=master)](https://travis-ci.org/StefanSchroeder/Golang-Ellipsoid)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Go Report Card](https://goreportcard.com/badge/github.com/StefanSchroeder/Golang-Ellipsoid)](https://goreportcard.com/report/github.com/StefanSchroeder/Golang-Ellipsoid)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/StefanSchroeder/Golang-Ellipsoid/badge)](https://scorecard.dev/viewer/?uri=github.com/StefanSchroeder/Golang-Ellipsoid)
 
 # ellipsoid.go
 
