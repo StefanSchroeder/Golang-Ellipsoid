@@ -16,7 +16,7 @@ can he even vouch for the results of the calculations,
 although they do seem to work for him and have been 
 tested against other methods.
 
-It has been successfully tested with Go 1.3, 1.4, 1.5, 1.6, 1.14, 1.18.
+It has been successfully tested with Go 1.3, 1.4, 1.5, 1.6, 1.14, 1.18, 1.23
 
 ## Overview
 
@@ -26,13 +26,52 @@ It has been successfully tested with Go 1.3, 1.4, 1.5, 1.6, 1.14, 1.18.
 * Convert cartesian [ECEF-coordinates](https://en.wikipedia.org/wiki/ECEF) to longitude, latitude, altitude (*ToLLA*) and vice versa (ToECEF).
 * Supports computation of lat-lon conversion to cartesian x,y (Displacement and Location). Handle with care.
 
-## Installation
+## Installation and Getting Started
 
 Make sure you have the a working Go environment. See the [install instructions](http://golang.org/doc/install.html). 
 
-Install package with
+Only install package with:
 
-	go get github.com/StefanSchroeder/Golang-Ellipsoid
+	go install github.com/StefanSchroeder/Golang-Ellipsoid@latest
+
+Or the whole nine yards:
+
+    git clone https://github.com/StefanSchroeder/Golang-Ellipsoid.git
+    cd Golang-Ellipsoid
+    go run hello_world.go 
+
+Shall print
+
+    ----- Testing To
+    Computed: Distance = 543044.190419953 Bearing = 137.50134015496275
+    Expected: Distance = 543044.190419953 Bearing = 137.50134015496275
+    ----- Testing At
+    Computed: lat3 = 37.74631054036373 lon3 = -122.21438161492877
+    Expected: lat3 = 37.74631054036373 lon3 = -122.21438161492877
+    ----- Testing ToECEF
+    Computed: x = 1.1042590709397183e+06 
+    Computed: y = -4.824765955871677e+06 
+    Computed: z = 4.009394028186885e+06
+    Expected: x = 1.1042590709397183e+06
+    Expected: y = -4.824765955871677e+06
+    Expected: z = 4.009394028186885e+06
+    ----- Testing Convert ECEF to Lat-Lon-Alt (ToLLA)
+    Computed: lat5 = 39.197807 lon5 = -77.10857400000002 alt3 = 55
+    Expected: lat5 = 39.197807 lon5 = -77.10857400000002 alt3 = 55
+    ----- Testing Displacement
+    Computed: x,y= -1952.810888505038 2963.144467728472
+    Expected: x,y= -1952.8108885261 2963.14446772882
+    ----- Done ---
+
+Next
+
+    cd ellipsoid
+    go test
+
+Shall print, boringly
+
+    PASS
+    ok  	github.com/StefanSchroeder/Golang-Ellipsoid/ellipsoid	0.004s
 
 ## Example
     
