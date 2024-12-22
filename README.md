@@ -1,5 +1,5 @@
 [![GoDoc](https://godoc.org/github.com/StefanSchroeder/Golang-Ellipsoid/ellipsoid?status.png)](https://godoc.org/github.com/StefanSchroeder/Golang-Ellipsoid/ellipsoid)
-[![Build Status](https://travis-ci.org/StefanSchroeder/Golang-Ellipsoid.svg?branch=master)](https://travis-ci.org/StefanSchroeder/Golang-Ellipsoid)
+[![Go](https://github.com/StefanSchroeder/Golang-Ellipsoid/actions/workflows/go.yml/badge.svg)](https://github.com/StefanSchroeder/Golang-Ellipsoid/actions/workflows/go.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Go Report Card](https://goreportcard.com/badge/github.com/StefanSchroeder/Golang-Ellipsoid)](https://goreportcard.com/report/github.com/StefanSchroeder/Golang-Ellipsoid)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/StefanSchroeder/Golang-Ellipsoid/badge)](https://scorecard.dev/viewer/?uri=github.com/StefanSchroeder/Golang-Ellipsoid)
